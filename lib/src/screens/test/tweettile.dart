@@ -68,7 +68,7 @@ class TweetState extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 4),//隙間挿入
-              Text('あぁもう最高や！'),
+              Center(child: Text('あぁもう最高や！')),
               IconButton(
                 onPressed: () {}, // ボタンを押したときに実行する内容を書けます。今回は何も実行しません。
                 icon: Icon(Icons.favorite_border), // Icon も Widget のひとつ。Icons. と打つと候補がたくさんでるので好きなアイコンに変更してみよう。

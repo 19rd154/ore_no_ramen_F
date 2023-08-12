@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'review_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>LoginPage(),)//ontapの確認用
+                            MaterialPageRoute(builder: (context) =>Reviews(),)//ontapの確認用
                           );
                         },
                         child:TweetState(value: i.toString())
