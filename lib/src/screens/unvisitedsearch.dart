@@ -1,14 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/article_container.dart';
 import 'package:world/src/screens/map_view.dart';
 import 'package:world/src/screens/position_sample.dart';
 
-class SearchScreen extends StatefulWidget {  
-
+class SearchScreen extends StatefulWidget {
+  final double latitude;
+  final double longitude;
   //　変数定義すると、UIのところから"widget.変数名" で呼ぶことができる。
-  
+  const SearchScreen({required this.latitude, required this.longitude});
 
-  const SearchScreen({super.key});
+  //const SearchScreen({super.key});
   
    // createState()　で"State"（Stateを継承したクラス）を返す
   @override
@@ -16,7 +19,17 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _Searchscreenstate extends State<SearchScreen> {
+  double Latitude = 0.0;
+  double Longitude = 0.0;
 
+
+  @override
+  void initState() {
+    super.initState();
+    // ページ遷移時に受け取った値を変数に設定
+    Latitude = widget.latitude;
+    Longitude = widget.longitude;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +72,6 @@ class _Searchscreenstate extends State<SearchScreen> {
                     // enterで実行する処理
                   },
                 ),
-
               ),
               OutlinedButton(
                 style: TextButton.styleFrom(
@@ -72,7 +84,15 @@ class _Searchscreenstate extends State<SearchScreen> {
                   );
                   /* ボタンがタップされた時の処理 */ },
                 child: Text('click here'),
-              )
+              ),Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Latitude: $Latitude'),
+                    Text('Longitude: $Longitude'),
+                  ],
+                ),
+              ),
               /*Padding(
                  padding: const EdgeInsets.symmetric(
                   vertical: 0,

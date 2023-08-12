@@ -6,14 +6,13 @@ import 'article_container.dart';
 
  class SearchScreen extends StatefulWidget {
    const SearchScreen({super.key});
-
+   LatLng currentLatLng =
    @override
    State<SearchScreen> createState() => _SearchScreenState();
  }
 
  class _SearchScreenState extends State<SearchScreen> {
    List<Article> articles = []; // 検索結果を格納する変数
-
    @override
    Widget build(BuildContext context) {
      return Scaffold(
