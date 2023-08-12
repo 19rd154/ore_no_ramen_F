@@ -1,7 +1,6 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:world/src/screens/article_container.dart';
 import 'package:world/src/screens/map_view.dart';
 import 'package:world/src/screens/position_sample.dart';
 
@@ -80,7 +79,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 onPressed: () {
                   Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  MapViewScreen  ())
+                  MaterialPageRoute(builder: (context) =>  MapViewScreen())
                   );
                   /* ボタンがタップされた時の処理 */ },
                 child: Text('click here'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:world/src/screens/review_post.dart';
 import 'review_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -28,7 +29,9 @@ class HomeScreen extends StatelessWidget {
                     onSubmitted: (String value) {
                     print(value); // enterで実行する処理
                   },),
+                  
                   ),
+                  
                   SizedBox(width: 500,height:100),
                   for(int i = 0; i<90; i++)...{SizedBox(width: 10),
                   Row(
@@ -48,10 +51,26 @@ class HomeScreen extends StatelessWidget {
                         //実際に呼び出す場合は繰り返し処理を挟む。
                     ],
                   ),
-                  }],
-              ),
+                  } ,
+                  
+                    
+                  
+                ],),
           ),
-    );
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    floatingActionButton: FloatingActionButton( // ここから
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReviewSend(),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                  );// ここまでを追加);
   }
   
 }
@@ -89,10 +108,12 @@ class TweetState extends StatelessWidget {
                 onPressed: () {}, // ボタンを押したときに実行する内容を書けます。今回は何も実行しません。
                 icon: Icon(Icons.favorite_border), // Icon も Widget のひとつ。Icons. と打つと候補がたくさんでるので好きなアイコンに変更してみよう。
               ),
-            ],
+             ], 
           ),
         ],
       ),
     );
+   
+            
   }
 }
