@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -11,39 +12,53 @@ class MapViewScreen extends StatefulWidget {
 }
 
 class MapViewScreenState extends State<MapViewScreen> {
-  final Completer<GoogleMapController> _controller = Completer();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+  Position? currentPosition;
+  late GoogleMapController _controller;
+  late StreamSubscription<Position> positionStream;
+  //初期位置
+  final CameraPosition _kGooglePlex = const CameraPosition(
+    target: LatLng(36.1953, 139.9011),
+    zoom: 14,
   );
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  final LocationSettings locationSettings = const LocationSettings(
+    accuracy: LocationAccuracy.high, //正確性:highはAndroid(0-100m),iOS(10m)
+    distanceFilter: 100,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    //位置情報が許可されていない時に許可をリクエストする
+    Future(() async {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if(permission == LocationPermission.denied){
+        await Geolocator.requestPermission();
+      }
+    });
+
+    //現在位置を更新し続ける
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
+          currentPosition = position;
+          print(position == null
+              ? 'Unknown'
+              : '${position.latitude.toString()}, ${position.longitude.toString()}');
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
-      ),
+    return GoogleMap(
+      mapType: MapType.normal,
+      initialCameraPosition: _kGooglePlex,
+      myLocationEnabled: true,//現在位置をマップ上に表示
+      onMapCreated: (GoogleMapController controller) {
+        _controller = controller;
+      },
     );
   }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
 }
+
