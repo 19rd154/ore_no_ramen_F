@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/article_container.dart';
+import 'package:world/src/screens/map_view.dart';
 
 class SearchScreen extends StatefulWidget {  
 
@@ -18,7 +19,7 @@ class _Searchscreenstate extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String nowplace = '検索したい地域を入力してください';
+    String nowplace = '検索したい';
     String searching='unnti';
     return Scaffold(
       
@@ -57,8 +58,20 @@ class _Searchscreenstate extends State<SearchScreen> {
                     // enterで実行する処理
                   },
                 ),
-              ),
 
+              ),
+              OutlinedButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapViewScreen())
+                  );
+                  /* ボタンがタップされた時の処理 */ },
+                child: Text('click here'),
+              )
               /*Padding(
                  padding: const EdgeInsets.symmetric(
                   vertical: 0,
