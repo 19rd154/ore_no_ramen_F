@@ -66,7 +66,7 @@ class _ReviewSendState extends State<ReviewSend> {
           ),
           Container(
             padding: const EdgeInsets.all(20),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
