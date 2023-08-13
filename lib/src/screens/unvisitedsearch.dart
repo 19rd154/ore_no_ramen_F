@@ -69,19 +69,14 @@ class _Searchscreenstate extends State<SearchScreen> {
                       onPressed: () {},
                       child: Text('現在地を取得'),
                     ),*/
-                    suffixIcon: IconButton(
+                    suffix:TextButton(
                     onPressed: () async{final result = await _handleHttp(Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);},
-                    icon: Icon(Icons.clear),
+                    child: Text('検索'),
                   ),
                   ),
-                  /*onSubmitted: (String value) async {
-                    final result = await _handleHttp(Latitude,Longitude);
-                    setState(() => _unvisitedDataList = result);
-                    //print(searching.replaceAll(searching, value));
-                    
-                    // enterで実行する処理
-                  },*/
+                  onSubmitted: (String value)async{
+                  },
                 
                 ),
               ),
