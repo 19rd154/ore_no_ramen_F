@@ -1,8 +1,8 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
-import 'package:world/src/screens/position_sample.dart';
+
 
 class SearchScreen extends StatefulWidget {
   final double latitude;
@@ -52,7 +52,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 ),
                 //検索ボックス
                 child: TextField(
-                  style: TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
                           fontSize: 18,
                           color: Colors.black,
                          ),
