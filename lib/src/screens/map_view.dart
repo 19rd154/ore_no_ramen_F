@@ -94,11 +94,10 @@ class MapViewScreenState extends State<MapViewScreen> {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () => {
-                Navigator.push(
+                Navigator.pop(
                   context,
-                  MaterialPageRoute(builder: (context) =>
-                      SearchScreen(latitude:currentLatLng.latitude,longitude:currentLatLng.longitude)),
-                ),
+                  currentLatLng
+                )
               },
             ),
           ]
