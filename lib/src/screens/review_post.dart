@@ -17,7 +17,10 @@ class _ReviewSendState extends State<ReviewSend> {
   File? _image;
   final picker = ImagePicker();
 
+
   Future _getImage() async {
+    //カメラロールから読み取る
+    //final pickedFile = await picker.getImage(source: ImageSource.gallery);
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
@@ -28,14 +31,19 @@ class _ReviewSendState extends State<ReviewSend> {
     });
   }
 
-  void _handleText(String e) {
+
+ void _handleText(String e) {
     setState(() {
       _text = e;
     });
   }
+ 
+ void _saveText() {
+    // テキストを変数に保存する処理
+    print('テキストが保存されました: $_text');
+  }
 
-  @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('投稿'),
@@ -67,24 +75,33 @@ class _ReviewSendState extends State<ReviewSend> {
           Container(
             padding: const EdgeInsets.all(20),
             child: const Column(
+                padding: const EdgeInsets.all(20),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 20,
-                    horizontal: 100,
+                    
                   ),
-                  child: TextField(
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
+                  child: TextFormField(
+                      enabled: true,
+                      onChanged: _handleText,
+                      minLines: 1,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        hintText: 'Review',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 2))),
+                      keyboardType: TextInputType.multiline,
+                      style: TextStyle(
+                        fontSize: 28,
+                      ),
                     ),
-                    decoration: InputDecoration(
-                      hintText: '検索したい',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                ),
+                ElevatedButton(
+                  onPressed: _saveText, // 新しく追加したボタンのコールバック
+                  child: Text('テキストを保存'),
                 ),
               ],
             ),
