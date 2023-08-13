@@ -51,6 +51,22 @@ class MapViewScreenState extends State<MapViewScreen> {
               ? 'Unknown'
               : '${position.latitude.toString()}, ${position.longitude.toString()}');
         });
+
+    // 現在位置を取得し、カメラの位置を更新する
+    Geolocator.getCurrentPosition().then((Position position) {
+      currentPosition = position;
+      LatLng initialLatLng = LatLng(position.latitude, position.longitude);
+      _updateCameraPosition(initialLatLng); // カメラの位置を更新
+    });
+  }
+
+  void _updateCameraPosition(LatLng latLng) {
+    CameraPosition newCameraPosition = CameraPosition(
+      target: latLng,
+      zoom: 14,
+    );
+
+    _controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
   void _updateMarker(LatLng latLng) {
