@@ -2,13 +2,12 @@
 import 'apisample.dart';
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
-<<<<<<< HEAD
-=======
+
 import 'apisample.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'article_container.dart';
->>>>>>> efe55270c31ffa509706eda924b465c34167f427
+
 
 
 class SearchScreen extends StatefulWidget {
@@ -21,13 +20,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _Searchscreenstate extends State<SearchScreen> {
-<<<<<<< HEAD
 
-=======
   double Latitude = 0.0;
   double Longitude = 0.0;
   List<UnvisitedData> _unvisitedDataList = [];
->>>>>>> efe55270c31ffa509706eda924b465c34167f427
 
 
   @override
@@ -80,21 +76,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 
                 ),
               ),
-              OutlinedButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>  MapViewScreen())
-                  );
-                  /* ボタンがタップされた時の処理 */ },
-                child: Text('click here'),
-<<<<<<< HEAD
-              ),
-=======
-              ),Center(
+              Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -109,7 +91,6 @@ class _Searchscreenstate extends State<SearchScreen> {
                   .toList(),
             )
             ),
->>>>>>> efe55270c31ffa509706eda924b465c34167f427
               /*Padding(
                  padding: const EdgeInsets.symmetric(
                   vertical: 0,
@@ -135,19 +116,18 @@ class _Searchscreenstate extends State<SearchScreen> {
                 );
                 // 戻ってきた際の処理
                 if (result != null) {
-                  // result を使って何か処理を行う
-                  print("戻ってきた値: $result");
+                  setState(() {
+                    Latitude = result.latitude;
+                    Longitude = result.longitude;
+                    print(Latitude);
+                    print(Longitude);
+                  });
                 }
               },
             child: const Icon(Icons.add),
           ),
-<<<<<<< HEAD
       );
     }
-}
-=======
-    );
-  }
   
   Future<List<UnvisitedData>> _handleHttp(double lat,double lng) async {
     var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/unvisited', {'lat': '$lat','lng': '$lng','rng':'4'});
@@ -179,4 +159,4 @@ class _Searchscreenstate extends State<SearchScreen> {
     }
     return _unvisitedDataList;}
   }
->>>>>>> efe55270c31ffa509706eda924b465c34167f427
+
