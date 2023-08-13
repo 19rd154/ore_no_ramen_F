@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'models/article.dart';
+import 'package:world/src/screens/apisample.dart';
 
 class ArticleContainer extends StatelessWidget {
   const ArticleContainer({
@@ -8,7 +8,7 @@ class ArticleContainer extends StatelessWidget {
     required this.article,
   });
 
-  final Article article;
+  final UnvisitedData article;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +32,17 @@ class ArticleContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 投稿日
+            // 店舗名
             Text(
-              DateFormat('yyyy/MM/dd').format(article.createdAt),
+              '店名:${article.name}',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),
             ),
-            // タイトル
+            // 住所
             Text(
-              article.title,
+              '住所:${article.address}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -51,56 +51,16 @@ class ArticleContainer extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            // タグ
+            // アクセス
             Text(
-              '#${article.tags.join(' #')}',
+              'アクセス:${article.access}',
               style: const TextStyle(
                 fontSize: 12,
                 color: Colors.white,
                 fontStyle: FontStyle.italic,
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // ハートアイコンといいね数
-                Column(
-                  children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      article.likesCount.toString(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                // 投稿者のアイコンと投稿者名
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CircleAvatar(
-                      radius: 26,
-                      backgroundImage: NetworkImage(article.user.profileImageUrl),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      article.user.id,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+          ]     
         ),
       ),
     );

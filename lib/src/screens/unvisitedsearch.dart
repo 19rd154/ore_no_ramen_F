@@ -1,7 +1,11 @@
 
-
+import 'apisample.dart';
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
+import 'apisample.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'article_container.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -20,6 +24,7 @@ class SearchScreen extends StatefulWidget {
 class _Searchscreenstate extends State<SearchScreen> {
   double Latitude = 0.0;
   double Longitude = 0.0;
+  List<UnvisitedData> _unvisitedDataList = [];
 
 
   @override
@@ -32,7 +37,7 @@ class _Searchscreenstate extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String nowplace = '検索したい';
+    String nowplace = 'username';
     String searching='unnti';
     return Scaffold(
       
@@ -64,12 +69,20 @@ class _Searchscreenstate extends State<SearchScreen> {
                       onPressed: () {},
                       child: Text('現在地を取得'),
                     ),*/
+                    suffixIcon: IconButton(
+                    onPressed: () async{final result = await _handleHttp(Latitude,Longitude);
+                    setState(() => _unvisitedDataList = result);},
+                    icon: Icon(Icons.clear),
                   ),
-                  onSubmitted: (String value) {
+                  ),
+                  /*onSubmitted: (String value) async {
+                    final result = await _handleHttp(Latitude,Longitude);
+                    setState(() => _unvisitedDataList = result);
+                    //print(searching.replaceAll(searching, value));
                     
-                    print(searching.replaceAll(searching, value));
                     // enterで実行する処理
-                  },
+                  },*/
+                
                 ),
               ),
               OutlinedButton(
@@ -91,7 +104,13 @@ class _Searchscreenstate extends State<SearchScreen> {
                     Text('Longitude: $Longitude'),
                   ],
                 ),
-              ),
+              ),Expanded(
+            child: ListView(
+              children: _unvisitedDataList
+                  .map((UnvisitedData) => ArticleContainer(article: UnvisitedData))
+                  .toList(),
+            )
+            ),
               /*Padding(
                  padding: const EdgeInsets.symmetric(
                   vertical: 0,
@@ -108,4 +127,34 @@ class _Searchscreenstate extends State<SearchScreen> {
           ),
     );
   }
-}
+  
+  Future<List<UnvisitedData>> _handleHttp(double lat,double lng) async {
+    var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/unvisited', {'lat': '$lat','lng': '$lng','rng':'4'});
+
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      print('Number of books about http: $responseBody.');
+     // JSONデータをパースしてList<Map<String, dynamic>>に変換
+      List<dynamic> responseData = jsonDecode(responseBody);
+      List<UnvisitedData> unvisitedDataList = [];
+      for (var itemData in responseData) {
+        // JSONデータから必要な要素を選んでオブジェクトに加工
+        UnvisitedData unvisitedData = UnvisitedData(
+          reviews: itemData['reviews'] ?? '',
+          access: itemData['access'],
+          address: itemData['address'],
+          id: itemData['id'],
+          name: itemData['name'],
+        );
+        unvisitedDataList.add(unvisitedData);
+      }
+      setState(() {
+        _unvisitedDataList = unvisitedDataList;
+      });
+      
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+    return _unvisitedDataList;}
+  }
