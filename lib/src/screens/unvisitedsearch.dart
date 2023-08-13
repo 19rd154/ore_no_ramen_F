@@ -1,7 +1,14 @@
-import 'dart:ffi';
 
+import 'apisample.dart';
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
+<<<<<<< HEAD
+=======
+import 'apisample.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'article_container.dart';
+>>>>>>> efe55270c31ffa509706eda924b465c34167f427
 
 
 class SearchScreen extends StatefulWidget {
@@ -14,7 +21,13 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _Searchscreenstate extends State<SearchScreen> {
+<<<<<<< HEAD
 
+=======
+  double Latitude = 0.0;
+  double Longitude = 0.0;
+  List<UnvisitedData> _unvisitedDataList = [];
+>>>>>>> efe55270c31ffa509706eda924b465c34167f427
 
 
   @override
@@ -24,7 +37,7 @@ class _Searchscreenstate extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String nowplace = '検索したい';
+    String nowplace = 'username';
     String searching='unnti';
     return Scaffold(
       
@@ -44,7 +57,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 ),
                 //検索ボックス
                 child: TextField(
-                  style: TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
                           fontSize: 18,
                           color: Colors.black,
                          ),
@@ -56,12 +69,15 @@ class _Searchscreenstate extends State<SearchScreen> {
                       onPressed: () {},
                       child: Text('現在地を取得'),
                     ),*/
+                    suffix:TextButton(
+                    onPressed: () async{final result = await _handleHttp(Latitude,Longitude);
+                    setState(() => _unvisitedDataList = result);},
+                    child: Text('検索'),
                   ),
-                  onSubmitted: (String value) {
-                    
-                    print(searching.replaceAll(searching, value));
-                    // enterで実行する処理
+                  ),
+                  onSubmitted: (String value)async{
                   },
+                
                 ),
               ),
               OutlinedButton(
@@ -75,7 +91,25 @@ class _Searchscreenstate extends State<SearchScreen> {
                   );
                   /* ボタンがタップされた時の処理 */ },
                 child: Text('click here'),
+<<<<<<< HEAD
               ),
+=======
+              ),Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Latitude: $Latitude'),
+                    Text('Longitude: $Longitude'),
+                  ],
+                ),
+              ),Expanded(
+            child: ListView(
+              children: _unvisitedDataList
+                  .map((UnvisitedData) => ArticleContainer(article: UnvisitedData))
+                  .toList(),
+            )
+            ),
+>>>>>>> efe55270c31ffa509706eda924b465c34167f427
               /*Padding(
                  padding: const EdgeInsets.symmetric(
                   vertical: 0,
@@ -107,6 +141,42 @@ class _Searchscreenstate extends State<SearchScreen> {
               },
             child: const Icon(Icons.add),
           ),
+<<<<<<< HEAD
       );
     }
 }
+=======
+    );
+  }
+  
+  Future<List<UnvisitedData>> _handleHttp(double lat,double lng) async {
+    var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/unvisited', {'lat': '$lat','lng': '$lng','rng':'4'});
+
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      print('Number of books about http: $responseBody.');
+     // JSONデータをパースしてList<Map<String, dynamic>>に変換
+      List<dynamic> responseData = jsonDecode(responseBody);
+      List<UnvisitedData> unvisitedDataList = [];
+      for (var itemData in responseData) {
+        // JSONデータから必要な要素を選んでオブジェクトに加工
+        UnvisitedData unvisitedData = UnvisitedData(
+          reviews: itemData['reviews'] ?? '',
+          access: itemData['access'],
+          address: itemData['address'],
+          id: itemData['id'],
+          name: itemData['name'],
+        );
+        unvisitedDataList.add(unvisitedData);
+      }
+      setState(() {
+        _unvisitedDataList = unvisitedDataList;
+      });
+      
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+    return _unvisitedDataList;}
+  }
+>>>>>>> efe55270c31ffa509706eda924b465c34167f427
