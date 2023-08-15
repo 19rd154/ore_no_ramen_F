@@ -5,8 +5,11 @@ import 'dart:io';
 
 
 class ReviewSend extends StatefulWidget {
-  const ReviewSend({Key? key,required this.shop_id,}) : super(key: key);
+  const ReviewSend({Key? key,
+  required this.shop_id,
+  required this.shop_name,}) : super(key: key);
   final String shop_id;
+  final String shop_name;
   @override
   _ReviewSendState createState() => _ReviewSendState();
 }
@@ -50,7 +53,7 @@ class _ReviewSendState extends State<ReviewSend> {
   }
  void _saveText() {
     // テキストを変数に保存する処理
-    print('テキストが保存されました: $_text,$_dishname,$_shopname');
+    print('テキストが保存されました: $_text,$_dishname,$_shopname,${widget.shop_id}');
   }
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,17 +94,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     vertical: 10,
 
                   ),
-                  child: TextFormField(
-                    enabled: true,
-                    onChanged: _shopnameText,
-                    minLines: 1,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                        hintText: '店舗名',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black, width: 2))),
-                    keyboardType: TextInputType.multiline,
-                    style: TextStyle(
+                  child: Text('${widget.shop_name}',style:TextStyle(
                       fontSize: 28,
                     ),
                   ),

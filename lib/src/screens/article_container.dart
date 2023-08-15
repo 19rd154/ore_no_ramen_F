@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:world/src/screens/review_post.dart';
 import 'package:world/src/screens/apisample.dart';
 
 class ArticleContainer extends StatelessWidget {
@@ -59,6 +60,18 @@ class ArticleContainer extends StatelessWidget {
                 color: Colors.white,
                 fontStyle: FontStyle.italic,
               ),
+            ),
+            IconButton( // ここから
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReviewSend(shop_id: article.id,shop_name: article.name,),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add),
             ),
           ]     
         ),

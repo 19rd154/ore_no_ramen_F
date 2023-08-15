@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:world/src/screens/review_post.dart';
+
 import 'review_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -57,19 +57,7 @@ class HomeScreen extends StatelessWidget {
                   
                 ],),
           ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    floatingActionButton: FloatingActionButton( // ここから
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReviewSend(shop_id: 'J000010296'),
-                              fullscreenDialog: true,
-                            ),
-                          );
-                        },
-                        child: const Icon(Icons.add),
-                      ),
+    
                   );// ここまでを追加);
   }
   
