@@ -49,7 +49,6 @@ class _Searchscreenstate extends State<SearchScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
-                  horizontal: 100,
                 ),
                 //検索ボックス
                 child: TextField(
