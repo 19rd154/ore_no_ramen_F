@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReviewSend(),
+                              builder: (context) => ReviewSend(shop_id: 'J000010296'),
                               fullscreenDialog: true,
                             ),
                           );

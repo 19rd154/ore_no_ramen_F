@@ -5,14 +5,16 @@ import 'dart:io';
 
 
 class ReviewSend extends StatefulWidget {
-  const ReviewSend({Key? key}) : super(key: key);
-
+  const ReviewSend({Key? key,required this.shop_id,}) : super(key: key);
+  final String shop_id;
   @override
   _ReviewSendState createState() => _ReviewSendState();
 }
 
 class _ReviewSendState extends State<ReviewSend> {
   String _text = '';
+  String _dishname='';
+  String _shopname = '';
   File? _image;
   final picker = ImagePicker();
 
@@ -31,15 +33,24 @@ class _ReviewSendState extends State<ReviewSend> {
   }
 
 
- void _handleText(String e) {
+ void _ReviewText(String ReviewText) {
     setState(() {
-      _text = e;
+      _text = ReviewText;
     });
   }
- 
+  void _dishnameText(String dishname) {
+    setState(() {
+      _dishname = dishname;
+    });
+  }
+ void _shopnameText(String shopname) {
+    setState(() {
+      _shopname = shopname;
+    });
+  }
  void _saveText() {
     // テキストを変数に保存する処理
-    print('テキストが保存されました: $_text');
+    print('テキストが保存されました: $_text,$_dishname,$_shopname');
   }
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +88,52 @@ class _ReviewSendState extends State<ReviewSend> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
+                    vertical: 10,
+
+                  ),
+                  child: TextFormField(
+                    enabled: true,
+                    onChanged: _shopnameText,
+                    minLines: 1,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                        hintText: '店舗名',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2))),
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(
+                      fontSize: 28,
+                    ),
+                  ),
+                ),
+                 Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10,
+
+                  ),
+                  child: TextFormField(
+                    enabled: true,
+                    onChanged: _dishnameText,
+                    minLines: 1,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                        hintText: '料理名',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 2))),
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(
+                      fontSize: 28,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
                     vertical: 20,
 
                   ),
                   child: TextFormField(
                     enabled: true,
-                    onChanged: _handleText,
+                    onChanged: _ReviewText,
                     minLines: 1,
                     maxLines: 10,
                     decoration: InputDecoration(
