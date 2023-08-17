@@ -42,17 +42,21 @@ class _ReviewSendState extends State<ReviewSend> {
   }
 
 
-  Future _getImage() async {
-    //カメラロールから読み取る
-    //final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  Future<void> _getImage() async {
+  try {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null) {
+      setState(() {
         _image = File(pickedFile.path);
-      } else {
-      }
-    });
+      });
+    } else {
+      // 画像が選択されなかった場合の処理
+      print('No image selected.');
+    }
+  } catch (e) {
+    print('Error selecting image: $e');
   }
+}
 
 
  void _ReviewText(String ReviewText) {
@@ -207,20 +211,27 @@ class _ReviewSendState extends State<ReviewSend> {
       updateOnDrag: true, //ドラッグによる操作可能か
     );
     }
-  Future<ApiResults> _Post_review_Http(String _shop_id,String _dishname,String _content,int _evaluate,String _image) async {
-    var url = Uri.http('127.0.0.1:8080', 'syunsuke/${_shop_id}/review/', );
-    var request = new Post_review(dishname: _dishname,content: _content,evaluate: _evaluate,image: _image);
+  Future<void> _Post_review_Http(String _shop_id, String _dishname, String _content, int _evaluate, String _image) async {
+  try {
+    var url = Uri.http('127.0.0.1:8080', 'syunsuke/${_shop_id}/review/');
+    var request = Post_review(dishname: _dishname, content: _content, evaluate: _evaluate, image: _image);
 
-    final response = await http.post(url,
+    final response = await http.post(
+      url,
       body: json.encode(request.toJson()),
-      headers: {"Content-Type": "application/json"});
-    if (response.statusCode == 200) {
-      return ApiResults.fromJson(json.decode(response.body));
-      
-      
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 204) {
+      final apiResults = ApiResults.fromJson(json.decode(response.body));
+      // リクエスト成功時の処理
     } else {
-      throw Exception('Failed');
+      throw Exception('Failed to post review');
     }
+  } catch (e) {
+    print('Error posting review: $e');
+    // エラーハンドリングの追加
   }
+}
 }
 

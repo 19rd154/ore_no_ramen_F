@@ -104,4 +104,35 @@ class TweetState extends StatelessWidget {
    
             
   }
+
+  //getリクエストの記述部分
+  /*Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
+    var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
+
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      print('Number of books about http: $responseBody.');
+     // JSONデータをパースしてList<Map<String, dynamic>>に変換
+      List<dynamic> responseData = jsonDecode(responseBody);
+      List<UnvisitedData> unvisitedDataList = [];
+      for (var itemData in responseData) {
+        // JSONデータから必要な要素を選んでオブジェクトに加工
+        UnvisitedData unvisitedData = UnvisitedData(
+          reviews: itemData['reviews'] ?? '',
+          access: itemData['access'],
+          address: itemData['address'],
+          id: itemData['id'],
+          name: itemData['name'],
+        );
+        unvisitedDataList.add(unvisitedData);
+      }
+      setState(() {
+        _unvisitedDataList = unvisitedDataList;
+      });
+      
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+    }
+    return _unvisitedDataList;}*/
 }
