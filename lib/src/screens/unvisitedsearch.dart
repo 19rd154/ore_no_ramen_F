@@ -10,6 +10,7 @@ import 'article_container.dart';
 
 
 
+
 class SearchScreen extends StatefulWidget {
 
   const SearchScreen({super.key});
@@ -65,7 +66,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                       child: Text('現在地を取得'),
                     ),*/
                     suffix:TextButton(
-                    onPressed: () async{final result = await _handleHttp(Visitflag,Latitude,Longitude);
+                    onPressed: () async{final result = await _v_search_Http(Visitflag,Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);print(Visitflag);},
                     child: Text('検索'),
                   ),
@@ -135,7 +136,7 @@ class _Searchscreenstate extends State<SearchScreen> {
       );
     }
   
-  Future<List<UnvisitedData>> _handleHttp(String Visitflag,double lat,double lng) async {
+  Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
     var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
 
     var response = await http.get(url);
