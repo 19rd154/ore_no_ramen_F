@@ -3,9 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+// インスタンス
+const storage = FlutterSecureStorage();
+
 Future<void> main() async {
-  runApp(const MyApp());
-  useEffect(
+  final Object Username= storage.read(key: "username") ?? "";
+  final Object Password = storage.read(key: "password") ?? "";
+  runApp(MyApp(username: Username, password: Password));
+  /*useEffect(
   () {
       Future(() async {
          // 初回起動かどうかの確認
@@ -19,7 +25,7 @@ Future<void> main() async {
        });
      },
      const [],
-  );
+  );*/
  // ...
 
  
