@@ -5,7 +5,7 @@ import 'package:world/src/screens/signup.dart';
 // インスタンス
 const storage = FlutterSecureStorage();
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key,}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();

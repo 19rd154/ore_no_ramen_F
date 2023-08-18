@@ -7,9 +7,17 @@ import 'screens/home.dart';
 import 'screens/notification.dart';
 import 'screens/login.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key,required this.username,required this.password})
+   : super(key: key);
+  final Object? username;
+  final Object? password;
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,9 +25,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const signupPage(),
+      home: widget.username==""? signupPage():MyStatefulWidget()
     );
   }
+  
+  
 }
 
 class MyStatefulWidget extends StatefulWidget {

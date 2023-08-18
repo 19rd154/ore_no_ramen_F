@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:world/src/app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // インスタンス
 const storage = FlutterSecureStorage();
 class signupPage extends StatefulWidget {
-  const signupPage({Key? key}) : super(key: key);
-
+  const signupPage({Key? key,}) : super(key: key);
   @override
   State<signupPage> createState() => _signupPageState();
 }
@@ -15,6 +13,8 @@ class _signupPageState extends State<signupPage> {
   bool _isObscure = true;
   String _username = '';
   String _password='';
+  
+  
 void _nameget(String Username) {
     setState(() {
       _username = Username;
@@ -26,6 +26,7 @@ void _nameget(String Username) {
       print(_password);
     });
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
