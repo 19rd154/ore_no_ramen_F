@@ -137,7 +137,7 @@ class _Searchscreenstate extends State<SearchScreen> {
     }
   
   Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
-    var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
+    var url = Uri.http('44.218.199.137:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
 
     var response = await http.get(url);
     if (response.statusCode == 200) {

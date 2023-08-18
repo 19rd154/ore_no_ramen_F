@@ -8,8 +8,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const storage = FlutterSecureStorage();
 
 Future<void> main() async {
-  final Object Username= storage.read(key: "username") ?? "";
-  final Object Password = storage.read(key: "password") ?? "";
+  WidgetsFlutterBinding.ensureInitialized();
+  final String? Username= await storage.read(key: "username") ?? "";
+  final String? Password = await storage.read(key: "password") ?? "";
+  print('ここだよ$Username');
   runApp(MyApp(username: Username, password: Password));
   /*useEffect(
   () {

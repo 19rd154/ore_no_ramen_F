@@ -10,8 +10,8 @@ import 'screens/login.dart';
 class MyApp extends StatefulWidget {
   const MyApp({Key? key,required this.username,required this.password})
    : super(key: key);
-  final Object? username;
-  final Object? password;
+  final String? username;
+  final String? password;
 
   @override
   _MyAppState createState() => _MyAppState();

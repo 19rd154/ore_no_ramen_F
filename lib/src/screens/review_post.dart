@@ -213,7 +213,7 @@ class _ReviewSendState extends State<ReviewSend> {
     }
   Future<void> _Post_review_Http(String _shop_id, String _dishname, String _content, int _evaluate, String _image) async {
   try {
-    var url = Uri.http('127.0.0.1:8080', 'syunsuke/${_shop_id}/review/');
+    var url = Uri.http('44.218.199.137:8080/', 'syunsuke/${_shop_id}/review/');
     var request = Post_review(dishname: _dishname, content: _content, evaluate: _evaluate, image: _image);
 
     final response = await http.post(
