@@ -1,6 +1,5 @@
 import 'dart:ffi';
 
-import 'package:flutter/material.dart';
 class ReviewData {//unvisitedで使うコンストラクタ
   final String shopname;
   final String dishname;

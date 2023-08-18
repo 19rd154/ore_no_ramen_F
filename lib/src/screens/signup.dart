@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:world/src/app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:world/src/screens/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // インスタンス
 const storage = FlutterSecureStorage();
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class signupPage extends StatefulWidget {
+  const signupPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<signupPage> createState() => _signupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _signupPageState extends State<signupPage> {
   bool _isObscure = true;
   String _username = '';
   String _password='';
-
-  final Object username= storage.read(key: "email") ?? "";
-  final Object password = storage.read(key: "password") ?? "";
-  
 void _nameget(String Username) {
     setState(() {
       _username = Username;
@@ -43,7 +39,6 @@ void _nameget(String Username) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
@@ -76,7 +71,7 @@ void _nameget(String Username) {
                       MaterialPageRoute(builder: (context) => MyStatefulWidget(),)
                     );
                   },
-                    child: Text('ログイン')
+                    child: Text('サインアップ')
                 ),
               ),
             ],

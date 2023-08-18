@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:world/src/screens/models/reviews.dart';
 
 import 'review_view.dart';
 
@@ -106,8 +107,8 @@ class TweetState extends StatelessWidget {
   }
 
   //getリクエストの記述部分
-  /*Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
-    var url = Uri.http('127.0.0.1:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
+  /*Future<List<ReviewData>> _review_get_Http(String Visitflag,double lat,double lng) async {
+    var url = Uri.http('127.0.0.1:8080', 'syunsuke//$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
 
     var response = await http.get(url);
     if (response.statusCode == 200) {
