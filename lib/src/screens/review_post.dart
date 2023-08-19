@@ -10,14 +10,19 @@ import 'package:http/http.dart' as http;
 
 
 import 'models/Post.dart';
+import 'models/Urlbase.dart';
 
 
 class ReviewSend extends StatefulWidget {
   const ReviewSend({Key? key,
   required this.shop_id,
-  required this.shop_name,}) : super(key: key);
+  required this.shop_name,
+  required this.username,
+  required this.password,}) : super(key: key);
   final String shop_id;
   final String shop_name;
+    final String? username;
+  final String? password;
   @override
   _ReviewSendState createState() => _ReviewSendState();
 }
@@ -163,7 +168,11 @@ class _ReviewSendState extends State<ReviewSend> {
                 ),
                 
                 ElevatedButton(
-                  onPressed: () {_Post_review_Http(widget.shop_id,_dishname,_text,_rating as int,escape);
+                  onPressed: () {_Post_review_Http(widget.shop_id,
+                  _dishname,
+                  _text,
+                  _rating.toInt(),
+                  escape);
                   print("requested");},// 新しく追加したボタンのコールバック
                   child: Text('reviewを保存'),
                   
@@ -213,16 +222,23 @@ class _ReviewSendState extends State<ReviewSend> {
     }
   Future<void> _Post_review_Http(String _shop_id, String _dishname, String _content, int _evaluate, String _image) async {
   try {
-    var url = Uri.http('44.218.199.137:8080/', 'syunsuke/${_shop_id}/review/');
-    var request = Post_review(dishname: _dishname, content: _content, evaluate: _evaluate, image: _image);
+    HttpURL _reviews = HttpURL(username: widget.username, password: widget.password);
+    var url = Uri.http('${_reviews.hostname}', '${_shop_id}/review');
+
+    var request = Post_review(
+      dishname: _dishname, 
+      content: _content,
+      evaluate: _evaluate, 
+      image: _image
+      );
 
     final response = await http.post(
       url,
       body: json.encode(request.toJson()),
-      headers: {"Content-Type": "application/json"},
+      headers: {'Authorization': 'Bearer ${_reviews.Authcode}',"Content-Type": "application/json"},
     );
 
-    if (response.statusCode == 204) {
+    if (response.statusCode == 200) {
       final apiResults = ApiResults.fromJson(json.decode(response.body));
       // リクエスト成功時の処理
     } else {

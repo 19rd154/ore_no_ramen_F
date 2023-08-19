@@ -1,9 +1,9 @@
 
-import 'apisample.dart';
+import 'models/apisample.dart';
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
 
-import 'apisample.dart';
+import 'models/Urlbase.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'article_container.dart';
@@ -13,7 +13,10 @@ import 'article_container.dart';
 
 class SearchScreen extends StatefulWidget {
 
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key,required this.username,required this.password})
+   : super(key: key);
+  final String? username;
+  final String? password;
   
    // createState()　で"State"（Stateを継承したクラス）を返す
   @override
@@ -21,7 +24,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _Searchscreenstate extends State<SearchScreen> {
-
+  
   double Latitude = 35.6408;
   double Longitude = 139.7499;
   List<UnvisitedData> _unvisitedDataList = [];
@@ -34,8 +37,10 @@ class _Searchscreenstate extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    HttpURL search = HttpURL(username: widget.username, password: widget.password);
     String nowplace = 'username';
     String Visitflag = 'unvisited';
+    int flag=0;
     return Scaffold(
       
       appBar: AppBar(
@@ -78,9 +83,10 @@ class _Searchscreenstate extends State<SearchScreen> {
               ),
               Center(child: TextButton(
                 onPressed: (){
-                  Visitflag = 'visited'; print(Visitflag);
+                  flag==0? Visitflag = 'visited':Visitflag='unvisited'; 
+                  print(Visitflag);
                 },
-                child: Text('訪れた店舗から検索する'),
+                child: flag==0?Text('訪れた店舗から検索する'):Text('訪れていない店舗から検索する'),
                
               ),),
               Center(
@@ -94,7 +100,11 @@ class _Searchscreenstate extends State<SearchScreen> {
               ),Expanded(
             child: ListView(
               children: _unvisitedDataList
-                  .map((UnvisitedData) => ArticleContainer(article: UnvisitedData))
+                  .map((UnvisitedData) => 
+                  ArticleContainer(article: UnvisitedData,
+                   Password:widget.password, 
+                   Username: widget.username,
+                  ))
                   .toList(),
             )
             ),
@@ -137,9 +147,11 @@ class _Searchscreenstate extends State<SearchScreen> {
     }
   
   Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
-    var url = Uri.http('44.218.199.137:8080', 'syunsuke/search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
+    HttpURL _search = HttpURL(username: widget.username, password: widget.password);
+    var url = Uri.http('${_search.hostname}', 'search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'},
+    );
 
-    var response = await http.get(url);
+    var response = await http.get(url, headers: {'Authorization': 'Bearer ${_search.Authcode}'},);
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       print('Number of books about http: $responseBody.');

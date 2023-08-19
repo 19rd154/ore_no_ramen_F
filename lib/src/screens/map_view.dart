@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:world/src/screens/unvisitedsearch.dart';
+
 
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({Key? key}) : super(key: key);

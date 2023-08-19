@@ -6,9 +6,13 @@ class ArticleContainer extends StatelessWidget {
   const ArticleContainer({
     super.key,
     required this.article,
+    required this.Username,
+    required this.Password,
   });
 
   final UnvisitedData article;
+  final String? Username;
+  final String? Password;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class ArticleContainer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReviewSend(shop_id: article.id,shop_name: article.name,),
+                    builder: (context) => ReviewSend(shop_id: article.id,shop_name: article.name, password: Password, username: Username,),
                     fullscreenDialog: true,
                   ),
                 );
