@@ -37,7 +37,7 @@ class _Searchscreenstate extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    HttpURL search = HttpURL(username: widget.username, password: widget.password);
+    HttpURL search = HttpURL();
     String nowplace = 'username';
     String Visitflag = 'unvisited';
     int flag=0;
@@ -149,7 +149,8 @@ class _Searchscreenstate extends State<SearchScreen> {
     }
   
   Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
-    HttpURL search = HttpURL(username: widget.username, password: widget.password);
+    HttpURL search = HttpURL();
+    await search.loadCredentials();
     var url = Uri.http(search.hostname, 'search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'},
     );
   print('${search.Authcode}');

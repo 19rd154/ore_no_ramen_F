@@ -84,7 +84,7 @@ class _Homescreenstate extends State<HomeScreen> {
 
   Future<List<ReviewData>> _Home_get_Http() async {
     HttpURL _search =
-        HttpURL(username: widget.username, password: widget.password);
+        HttpURL();
     var url = Uri.http('${_search.hostname}', 'home',);
 
     var response = await http.get(

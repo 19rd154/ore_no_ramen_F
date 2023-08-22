@@ -229,7 +229,8 @@ class _ReviewSendState extends State<ReviewSend> {
     }
   Future<void> _Post_review_Http(String shopId, String dishname, String content, int evaluate, String image) async {
   try {
-    HttpURL reviews = HttpURL(username: widget.username, password: widget.password);
+    HttpURL reviews = HttpURL();
+    await reviews.loadCredentials();
     var url = Uri.http(reviews.hostname, 'review');
 
     var request = Post_review(
@@ -244,7 +245,7 @@ class _ReviewSendState extends State<ReviewSend> {
     final response = await http.post(
       url,
       body: json.encode(request.toJson()),
-      headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ==',"Content-Type": "application/json"},
+      headers: {'Authorization': 'Basic ${reviews.Authcode}',"Content-Type": "application/json"},
     );
 
     if (response.statusCode == 200) {
