@@ -1,5 +1,5 @@
 
-import 'models/apisample.dart';
+import 'models/SearchData.dart';
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/map_view.dart';
 
@@ -63,9 +63,9 @@ class _Searchscreenstate extends State<SearchScreen> {
                           color: Colors.black,
                          ),
                   decoration: InputDecoration(//デコレーション
-                    hintText: '$nowplace',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+                    hintText: nowplace,
+                    prefixIcon: const Icon(Icons.search),
+                    border: const OutlineInputBorder(),
                     /*suffixIcon: ElevatedButton(
                       onPressed: () {},
                       child: Text('現在地を取得'),
@@ -73,7 +73,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                     suffix:TextButton(
                     onPressed: () async{final result = await _v_search_Http(Visitflag,Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);print(Visitflag);},
-                    child: Text('検索'),
+                    child: const Text('検索'),
                   ),
                   ),
                   onSubmitted: (String value)async{
@@ -85,8 +85,9 @@ class _Searchscreenstate extends State<SearchScreen> {
                 onPressed: (){
                   flag==0? Visitflag = 'visited':Visitflag='unvisited'; 
                   print(Visitflag);
+                  flag==0? flag=1:flag=0;
                 },
-                child: flag==0?Text('訪れた店舗から検索する'):Text('訪れていない店舗から検索する'),
+                child: flag==0?const Text('訪れた店舗から検索する'):const Text('訪れていない店舗から検索する'),
                
               ),),
               Center(
@@ -97,7 +98,8 @@ class _Searchscreenstate extends State<SearchScreen> {
                     Text('Longitude: $Longitude'),
                   ],
                 ),
-              ),Expanded(
+              ),
+              Expanded(
             child: ListView(
               children: _unvisitedDataList
                   .map((UnvisitedData) => 
@@ -127,7 +129,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MapViewScreen(),
+                    builder: (context) => const MapViewScreen(),
                     fullscreenDialog: true,
                   ),
                 );
@@ -147,11 +149,11 @@ class _Searchscreenstate extends State<SearchScreen> {
     }
   
   Future<List<UnvisitedData>> _v_search_Http(String Visitflag,double lat,double lng) async {
-    HttpURL _search = HttpURL(username: widget.username, password: widget.password);
-    var url = Uri.http('${_search.hostname}', 'search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'},
+    HttpURL search = HttpURL(username: widget.username, password: widget.password);
+    var url = Uri.http(search.hostname, 'search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'},
     );
-
-    var response = await http.get(url, headers: {'Authorization': 'Bearer ${_search.Authcode}'},);
+  print('${search.Authcode}');
+    var response = await http.get(url, headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ=='},);
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       print('Number of books about http: $responseBody.');

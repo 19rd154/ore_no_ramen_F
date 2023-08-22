@@ -15,7 +15,7 @@ class MapViewScreen extends StatefulWidget {
 class MapViewScreenState extends State<MapViewScreen> {
   Position? currentPosition;
   Set<Marker> markers = {}; // マーカーを保持するセット
-  LatLng currentLatLng = LatLng(35.6895, 139.6917); // 初期位置
+  LatLng currentLatLng = const LatLng(35.6895, 139.6917); // 初期位置
 
   late GoogleMapController _controller;
   late StreamSubscription<Position> positionStream;
@@ -92,7 +92,7 @@ class MapViewScreenState extends State<MapViewScreen> {
               automaticallyImplyLeading:true,
               actions: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               onPressed: () => {
                 Navigator.pop(
                   context,

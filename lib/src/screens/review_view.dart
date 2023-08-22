@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Reviews extends StatelessWidget {
-  const Reviews({Key? key}) : super(key: key);
+import 'models/Reviews.dart';
+
+class Reviewsshow extends StatelessWidget {
+  final ReviewData reviewdata;
+  const Reviewsshow({super.key, required this.reviewdata,
+ });
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +19,14 @@ class Reviews extends StatelessWidget {
           // children プロパティに Text のリストを与えます。
           Row(
             children: [
-              Column(
+              const Column(
                 children: [
                   Text('店舗名',style: TextStyle(fontSize: 28),),
                   Text('YYYY/MM/DD',style: TextStyle(fontSize:28),),
                   Text('料理名',style: TextStyle(fontSize:28),),
                   ],
               ),
-             Expanded(child: SizedBox()),
+             const Expanded(child: SizedBox()),
              Image.network('https://yakiimosan.com/wp-content/uploads/2022/07/yakiimo_pc-150x150.png'),
              ],
           ),
@@ -32,12 +36,12 @@ class Reviews extends StatelessWidget {
 
 
 
-          SingleChildScrollView(//スクロールを可能に！
+          const SingleChildScrollView(//スクロールを可能に！
             child:Expanded(child:Center(child: Text('context',style: TextStyle(fontSize: 25),),),),
           ),
           IconButton(
             onPressed: () {}, // ボタンを押したときに実行する内容を書けます。今回は何も実行しません。
-            icon: Icon(Icons.favorite_border), // Icon も Widget のひとつ。Icons. と打つと候補がたくさんでるので好きなアイコンに変更してみよう。
+            icon: const Icon(Icons.favorite_border), // Icon も Widget のひとつ。Icons. と打つと候補がたくさんでるので好きなアイコンに変更してみよう。
               ),
         ],
       ),

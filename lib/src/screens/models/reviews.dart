@@ -1,9 +1,8 @@
-import 'dart:ffi';
 
 class ReviewData {//unvisitedで使うコンストラクタ
   final String shopname;
   final String dishname;
-  final Int evaluate;
+  final int evaluate;
   final String content;
   final DateTime created_at;
 

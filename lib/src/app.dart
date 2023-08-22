@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:world/src/screens/signup.dart';
 
-import 'screens/account.dart';
 import 'screens/shopsearch.dart';
 import 'screens/home.dart';
-import 'screens/notification.dart';
+
 
 
 const storage = FlutterSecureStorage();
@@ -28,7 +27,7 @@ class _MyAppState extends State<MyApp>{
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: widget.username==""? signupPage():MyStatefulWidget()
+      home: widget.username==""? const signupPage():const MyStatefulWidget()
     );
   }
   
@@ -36,7 +35,7 @@ class _MyAppState extends State<MyApp>{
 }
 
 class MyStatefulWidget extends StatefulWidget {
-    const MyStatefulWidget({Key? key,});
+    const MyStatefulWidget({super.key,});
 
 
   @override
@@ -57,9 +56,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     _screens.addAll([
       HomeScreen(username: username, password: password),
       SearchScreen(username: username, password: password),
-      NotificationScreen(),
-      NotificationScreen(),
-      AccountScreen(),
     ]);
   }
     Future<void> _loadCredentials() async {
@@ -84,9 +80,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: '検索'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notifications), label: 'お知らせ'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
+
           ],
           type: BottomNavigationBarType.fixed,
         ));

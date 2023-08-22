@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:world/src/screens/review_post.dart';
+import 'package:intl/intl.dart';
 
-import 'models/SearchData.dart';
+import 'models/Reviews.dart';
 
-class ArticleContainer extends StatelessWidget {
-  const ArticleContainer({
-    super.key,
-    required this.article,
-    required this.Username,
-    required this.Password,
-  });
+class ArticleContainer_review extends StatelessWidget {
+  final ReviewData reviewData;
 
-  final UnvisitedData article;
-  final String? Username;
-  final String? Password;
+  const ArticleContainer_review({super.key, required this.reviewData});
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +32,15 @@ class ArticleContainer extends StatelessWidget {
           children: [
             // 店舗名
             Text(
-              '店名:${article.name}',
+              '店名:${reviewData.shopname}',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),
             ),
-            // 住所
+            // ryourimei
             Text(
-              '住所:${article.address}',
+              '料理名:${reviewData.dishname}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -56,26 +49,13 @@ class ArticleContainer extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            // アクセス
+            // 日付
             Text(
-              'アクセス:${article.access}',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            IconButton( // ここから
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ReviewSend(shop_id: article.id,shop_name: article.name, password: Password, username: Username,),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add),
+                DateFormat('yyyy/MM/dd').format(reviewData.created_at),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                ),
             ),
           ]     
         ),

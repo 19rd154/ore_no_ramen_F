@@ -10,11 +10,11 @@ class AccountScreen extends StatelessWidget {
         title: const Text('アカウント'),
         automaticallyImplyLeading: false,
       ),
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         child: Center(
           child: ElevatedButton(
-            child: Text('ログアウト'),
+            child: const Text('ログアウト'),
             onPressed: (){
               // ログイン画面に戻る。
               Navigator.pop(context);

@@ -3,6 +3,7 @@
 class Post_review {
   // コンストラクタ
   Post_review({
+    required this.shop_id,
     required this.dishname,
     required this.content,
     required this.evaluate,
@@ -11,12 +12,20 @@ class Post_review {
   });
 
   // プロパティ
+  String shop_id;
   String dishname;
   String content;
   int evaluate;
   String image;
 
+  
+  @override
+  String toString() {
+    return 'Post_review{shop_id: $shop_id, dishname: $dishname, content: $content, evaluate: $evaluate, image: $image}';
+  }
+
   Map<String, dynamic> toJson() => {
+    'shop_id': shop_id,
     'dishname': dishname,
     'content': content,
     'evaluate': evaluate,

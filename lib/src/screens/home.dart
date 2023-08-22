@@ -1,142 +1,118 @@
 import 'package:flutter/material.dart';
-//import 'package:world/src/screens/models/reviews.dart';
+import 'models/Reviews.dart';
 
-import 'review_view.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key,required this.username,required this.password})
-   : super(key: key);
+import 'models/Urlbase.dart';
+import 'package:world/src/screens/review_allview.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key, required this.username, required this.password})
+      : super(key: key);
   final String? username;
   final String? password;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false,
-        title: const Text('俺のらぁめん'),
-         
-        ),
-      body:SingleChildScrollView(//スクロールを可能に！
-        child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 100,
-                    ),
-                    child: TextField(
-                      style: TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
-                        fontSize: 18,
-                        color: Colors.black,
-                        ),
-                    onSubmitted: (String value) {
-                    print(value); // enterで実行する処理
-                  },),
-                  
-                  ),
-                  
-                  SizedBox(width: 500,height:100),
-                  for(int i = 0; i<90; i++)...{SizedBox(width: 10),
-                  Row(
-                    children: [
-                      for(int j = 0; j<3; j++)...{
-                        GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>Reviews(),)//ontapの確認用
-                          );
-                        },
-                        child:TweetState(value: i.toString())
-                        ),
-                      SizedBox(width: 12),
-                      }
-                        //実際に呼び出す場合は繰り返し処理を挟む。
-                    ],
-                  ),
-                  } ,
-                  
-                    
-                  
-                ],),
-          ),
-    
-                  );// ここまでを追加);
-  }
-  
+  _Homescreenstate createState() => _Homescreenstate();
 }
 
-class TweetState extends StatelessWidget {
-  final String value;
-  const TweetState({Key? key, required this.value}) : super(key: key);
-  
+class _Homescreenstate extends State<HomeScreen> {
+  List<ReviewData> _reviewDataList = [];
+
   @override
-  Widget build(BuildContext context) {
-    return Padding(//columをpaddingでラップ
-      padding: const EdgeInsets.all(8),
-      child: Row(//columをRowでラップ
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ここにユーザーアイコンを追加する.backgroundImageで背景画像を決定.
-          // https://flutter.takuchalle.dev/docs/widget/circleavatar/
-          // AssetsImageでフォルダから画像の呼び出しを試したが動作不良.とりあえずNetworkImageから取ってくる方が良さげ
-          SizedBox(width: 8), // 少し隙間を開ける
-          Column(
-            // start: 左
-            // center: 中央
-            // end: 右
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-                  Text('店名'),
-                  SizedBox(width: 8),//隙間挿入
-                  Text('YYYY/MM/DD'),
-
-
-              SizedBox(height: 4),//隙間挿入
-              Text('$value'),
-
-                // ボタンを押したときに実行する内容を書けます。今回は何も実行しません。
-              Icon(Icons.favorite), // Icon も Widget のひとつ。Icons. と打つと候補がたくさんでるので好きなアイコンに変更してみよう。
-
-             ], 
-          ),
-        ],
-      ),
-    );
-   
-            
+  void initState() {
+    super.initState();
   }
 
-  //getリクエストの記述部分
-  /*Future<List<ReviewData>> _review_get_Http(String Visitflag,double lat,double lng) async {
-    var url = Uri.http('127.0.0.1:8080', 'syunsuke//$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('俺のらぁめん'),
+      ),
+      body: Column(crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //検索ボックスの上下左右の空白の幅
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                //検索ボックス
+                child: TextField(
+                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                          fontSize: 18,
+                          color: Colors.black,
+                         ),
+                  decoration: InputDecoration(//デコレーション
+                    hintText: '店舗名',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                    /*suffixIcon: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('現在地を取得'),
+                    ),*/
+                    suffix:TextButton(
+                    onPressed: () async{final result = await _Home_get_Http();
+                    setState(() => _reviewDataList = result);},
+                    child: Text('検索'),
+                  ),
+              
+            
+            ),
+        ),
+        ),
+        Expanded(
+            child: ListView(
+  children: _reviewDataList
+      .map((review) => 
+          ArticleContainer_review(reviewData: review),
+      ).toList(),
+)
+                  
+            )
+            ]),
+        );
+      
+  }
 
-    var response = await http.get(url);
+  /*Future<void> _loadReviewData() async {
+    final result = await _Home_get_Http();
+    setState(() => _reviewDataList = result);
+  }*/
+
+  Future<List<ReviewData>> _Home_get_Http() async {
+    HttpURL _search =
+        HttpURL(username: widget.username, password: widget.password);
+    var url = Uri.http('${_search.hostname}', 'home',);
+
+    var response = await http.get(
+      url,
+      headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ=='},
+    );
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       print('Number of books about http: $responseBody.');
-     // JSONデータをパースしてList<Map<String, dynamic>>に変換
       List<dynamic> responseData = jsonDecode(responseBody);
-      List<UnvisitedData> unvisitedDataList = [];
+      List<ReviewData> reviewdDataList = [];
       for (var itemData in responseData) {
-        // JSONデータから必要な要素を選んでオブジェクトに加工
-        UnvisitedData unvisitedData = UnvisitedData(
-          reviews: itemData['reviews'] ?? '',
-          access: itemData['access'],
-          address: itemData['address'],
-          id: itemData['id'],
-          name: itemData['name'],
+        ReviewData reviewData = ReviewData(
+          shopname: itemData['shopname'],
+          dishname: itemData['dishname'],
+          evaluate: itemData['evaluate'],
+          content: itemData['content'],
+          created_at: itemData['created_at'],
         );
-        unvisitedDataList.add(unvisitedData);
+        reviewdDataList.add(reviewData);
       }
-      setState(() {
-        _unvisitedDataList = unvisitedDataList;
-      });
-      
+      return reviewdDataList;
     } else {
       print('Request failed with status: ${response.statusCode}.');
+      return [];
     }
-    return _unvisitedDataList;}*/
+  }
 }
+
+
+

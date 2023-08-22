@@ -10,9 +10,11 @@ class signupPage extends StatefulWidget {
 }
 
 class _signupPageState extends State<signupPage> {
-  bool _isObscure = true;
+  final bool _isObscure = true;
   String _username = '';
-  String _password='';
+  String _password = '';
+  String _errorText = ''; // Add this line
+
   
   
 void _nameget(String Username) {
@@ -31,7 +33,7 @@ void _nameget(String Username) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('俺のらぁめん'),
+        title: const Text('俺のらぁめん'),
         backgroundColor: Colors.black,
       ),
       body: Center(
@@ -58,23 +60,30 @@ void _nameget(String Username) {
                   enabled: true,
                   onFieldSubmitted: _passget,
                   maxLines: 1,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: 'パスワードを入力',),
                 ),
               ),
               Center(
-                child: ElevatedButton(
-                    onPressed: () async {
-                    await storage.write(key: "username", value: _username);
-                    await storage.write(key: "password", value: _password);
-                    Navigator.push( 
-                      context,
-                      MaterialPageRoute(builder: (context) => MyStatefulWidget(),)
-                    );
-                  },
-                    child: Text('サインアップ')
-                ),
-              ),
+        child: ElevatedButton(
+          onPressed: () async {
+            if (_username.isNotEmpty && _password.isNotEmpty) {
+              _errorText = ''; // Clear any previous error
+              await storage.write(key: "username", value: _username);
+              await storage.write(key: "password", value: _password);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyStatefulWidget()),
+              );
+            } else {
+              setState(() {
+                _errorText = 'ユーザ名とパスワードを入力してください';
+              });
+            }
+          },
+          child: const Text('サインアップ'),
+        ),
+      ),
             ],
           ),
         ),

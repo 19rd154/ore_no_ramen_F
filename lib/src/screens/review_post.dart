@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -9,6 +8,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
+import '../app.dart';
 import 'models/Post.dart';
 import 'models/Urlbase.dart';
 
@@ -32,11 +32,11 @@ class _ReviewSendState extends State<ReviewSend> {
   String _dishname='';
   String _shopname = '';
   File? _image;
-  String escape = ''; 
+  String escape = '0'; 
   final picker = ImagePicker();
 
     late double _rating;
-  double _initialRating = 2.0;
+  final double _initialRating = 2.0;
 
   IconData? _selectedIcon;
 
@@ -68,20 +68,22 @@ class _ReviewSendState extends State<ReviewSend> {
     setState(() {
       _text = ReviewText;
     });
+    print(_text);
   }
   void _dishnameText(String dishname) {
     setState(() {
       _dishname = dishname;
-    });
+    });print(_dishname);
   }
  void _shopnameText(String shopname) {
     setState(() {
       _shopname = shopname;
-    });
+    });print(_shopname);
   }
  void _saveText() {
     // テキストを変数に保存する処理
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +93,7 @@ class _ReviewSendState extends State<ReviewSend> {
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
+            child: Column(//画像選択
               children: [
                 const Text(
                   '画像を選択',
@@ -105,29 +107,29 @@ class _ReviewSendState extends State<ReviewSend> {
                 Center(
                   child: TextButton(
                     onPressed: _getImage,
-                    child: Text('画像を選択する'),
+                    child: const Text('画像を選択する'),
                   ),
                 )
               ],
             ),
           ),
-          Container(
+          Container(//店名の表示
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 10,
 
                   ),
-                  child: Text('${widget.shop_name}',style:TextStyle(
+                  child: Text(widget.shop_name,style:const TextStyle(
                       fontSize: 28,
                     ),
                   ),
                 ),
-                 Padding(
-                  padding: EdgeInsets.symmetric(
+                 Padding(//料理名の入力
+                  padding: const EdgeInsets.symmetric(
                     vertical: 10,
 
                   ),
@@ -136,18 +138,18 @@ class _ReviewSendState extends State<ReviewSend> {
                     onChanged: _dishnameText,
                     minLines: 1,
                     maxLines: 10,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: '料理名',
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black, width: 2))),
                     keyboardType: TextInputType.multiline,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 28,
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
+                Padding(//レビューの入力
+                  padding: const EdgeInsets.symmetric(
                     vertical: 20,
 
                   ),
@@ -156,39 +158,44 @@ class _ReviewSendState extends State<ReviewSend> {
                     onChanged: _ReviewText,
                     minLines: 1,
                     maxLines: 10,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: 'Review',
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black, width: 2))),
                     keyboardType: TextInputType.multiline,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 28,
                     ),
                   ),
                 ),
-                
-                ElevatedButton(
-                  onPressed: () {_Post_review_Http(widget.shop_id,
-                  _dishname,
-                  _text,
-                  _rating.toInt(),
-                  escape);
-                  print("requested");},// 新しく追加したボタンのコールバック
-                  child: Text('reviewを保存'),
-                  
+                Center(//評価バーの表示
+                  child: Column(
+                  children: <Widget>[
+                  const SizedBox(
+                    height: 40.0,
+                  ),
+                  _ratingBar(),
+                  Text(
+                    'Rating: $_rating',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton(//送信ボタン
+                  onPressed: () {_Post_review_Http(
+                    widget.shop_id,
+                    _dishname,
+                    _text,
+                    _rating.toInt(),
+                    escape
+                    );//postリクエストの呼び出し
+                    Navigator.push( 
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
+                    );
+                  },
 
+                  child: const Text('reviewを保存'),//ボタンの表示テキスト
                 ),
-                Center(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 40.0,
-                ),
-                _ratingBar(),
-                Text(
-                  'Rating: $_rating',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                
               ],
             ),
           ),
@@ -207,7 +214,7 @@ class _ReviewSendState extends State<ReviewSend> {
       unratedColor: Colors.amber.withAlpha(50), //アイコンの色
       itemCount: 5, //段階数
       itemSize: 50.0, //アイコンの大きさ
-      itemPadding: EdgeInsets.symmetric(horizontal: 4.0), //アイテム同士の間隔
+      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0), //アイテム同士の間隔
       itemBuilder: (context, _) => Icon(
         _selectedIcon ?? Icons.star,
         color: Colors.amber,
@@ -220,22 +227,24 @@ class _ReviewSendState extends State<ReviewSend> {
       updateOnDrag: true, //ドラッグによる操作可能か
     );
     }
-  Future<void> _Post_review_Http(String _shop_id, String _dishname, String _content, int _evaluate, String _image) async {
+  Future<void> _Post_review_Http(String shopId, String dishname, String content, int evaluate, String image) async {
   try {
-    HttpURL _reviews = HttpURL(username: widget.username, password: widget.password);
-    var url = Uri.http('${_reviews.hostname}', '${_shop_id}/review');
+    HttpURL reviews = HttpURL(username: widget.username, password: widget.password);
+    var url = Uri.http(reviews.hostname, 'review');
 
     var request = Post_review(
-      dishname: _dishname, 
-      content: _content,
-      evaluate: _evaluate, 
-      image: _image
+      shop_id: shopId,
+      dishname: dishname, 
+      content: content,
+      evaluate: evaluate, 
+      image: image
       );
+      print(request);
 
     final response = await http.post(
       url,
       body: json.encode(request.toJson()),
-      headers: {'Authorization': 'Bearer ${_reviews.Authcode}',"Content-Type": "application/json"},
+      headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ==',"Content-Type": "application/json"},
     );
 
     if (response.statusCode == 200) {
