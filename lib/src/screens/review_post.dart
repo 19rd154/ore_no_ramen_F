@@ -180,13 +180,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(//送信ボタン
-                  onPressed: () {_Post_review_Http(
-                    widget.shop_id,
-                    _dishname,
-                    _text,
-                    _rating.toInt(),
-                    escape
-                    );//postリクエストの呼び出し
+                  onPressed: () {_post_request(_image!);//postリクエストの呼び出し
                     Navigator.push( 
                       context,
                       MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
@@ -227,7 +221,7 @@ class _ReviewSendState extends State<ReviewSend> {
       updateOnDrag: true, //ドラッグによる操作可能か
     );
     }
-  Future<void> _Post_review_Http(String shopId, String dishname, String content, int evaluate, String image) async {
+  /*Future<void> _Post_review_Http(String shopId, String dishname, String content, int evaluate, String image) async {
   try {
     HttpURL reviews = HttpURL();
     await reviews.loadCredentials();
@@ -258,6 +252,46 @@ class _ReviewSendState extends State<ReviewSend> {
     print('Error posting review: $e');
     // エラーハンドリングの追加
   }
+}*/
+Future<void> _post_request(File image,) async {
+HttpURL httpURL = HttpURL();
+  await httpURL.loadCredentials();
+  final response = await multipart(
+    method: 'POST',
+    url: Uri.https('${httpURL.hostname}', '/review'),
+    files: [
+      http.MultipartFile.fromBytes(
+        'media',
+        image.readAsBytesSync(),
+      ),
+    ],
+  );
+
+  print(response.statusCode);
+  print(response.body);
+}
+
+Future<http.Response> multipart({  
+
+  required String method,
+  required Uri url,
+  required List<http.MultipartFile> files,
+}) async {
+  final request = http.MultipartRequest(method, url);
+  HttpURL reviews = HttpURL();
+  await reviews.loadCredentials();
+  request.files.addAll(files); // 送信するファイルのバイナリデータを追加
+  request.headers.addAll({'Authorization': 'Basic ${reviews.Authcode}'}); // 認証情報などを追加
+
+  final stream = await request.send();
+
+  return http.Response.fromStream(stream).then((response) {
+    if (response.statusCode == 200) {
+      return response;
+    }
+
+    return Future.error(response);
+  });
 }
 }
 

@@ -154,7 +154,7 @@ class _Searchscreenstate extends State<SearchScreen> {
     var url = Uri.http(search.hostname, 'search/$Visitflag', {'lat': '$lat','lng': '$lng','rng':'4'},
     );
   print('${search.Authcode}');
-    var response = await http.get(url, headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ=='},);
+    var response = await http.get(url, headers: {'Authorization': 'Basic ${search.Authcode}'},);
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       print('Number of books about http: $responseBody.');
