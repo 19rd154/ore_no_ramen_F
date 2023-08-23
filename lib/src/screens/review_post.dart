@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:dio/dio.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -33,12 +34,7 @@ class _ReviewSendState extends State<ReviewSend> {
   String _shopname = '';
   File? _image;
   String escape = '0'; 
-  final picker = ImagePicker();
-
-    late double _rating;
-  final double _initialRating = 2.0;
-
-  IconData? _selectedIcon;
+ final picker = ImagePicker();
 
   @override
   void initState() {
@@ -46,22 +42,26 @@ class _ReviewSendState extends State<ReviewSend> {
     _rating = _initialRating;
   }
 
+    late double _rating;
+  final double _initialRating = 2.0;
 
-  Future<void> _getImage() async {
-  try {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    } else {
-      // 画像が選択されなかった場合の処理
-      print('No image selected.');
+  IconData? _selectedIcon;
+
+
+    Future<void> _getImage() async {
+    try {
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _image = File(pickedFile.path);
+        });
+      } else {
+        print('No image selected.');
+      }
+    } catch (e) {
+      print('Error selecting image: $e');
     }
-  } catch (e) {
-    print('Error selecting image: $e');
   }
-}
 
 
  void _ReviewText(String ReviewText) {
@@ -180,7 +180,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(//送信ボタン
-                  onPressed: () {_post_request(_image!);//postリクエストの呼び出し
+                  onPressed: () {_post_request(widget.shop_id,_image,_dishname,_text,_rating.toInt());//postリクエストの呼び出し
                     Navigator.push( 
                       context,
                       MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
@@ -253,45 +253,36 @@ class _ReviewSendState extends State<ReviewSend> {
     // エラーハンドリングの追加
   }
 }*/
-Future<void> _post_request(File image,) async {
-HttpURL httpURL = HttpURL();
-  await httpURL.loadCredentials();
-  final response = await multipart(
-    method: 'POST',
-    url: Uri.https('${httpURL.hostname}', '/review'),
-    files: [
-      http.MultipartFile.fromBytes(
-        'media',
-        image.readAsBytesSync(),
+Future<void> _post_request(String shop_id,File? image, String dishname, String content,int evaluate) async {
+  try {
+    HttpURL httpURL = HttpURL();
+    await httpURL.loadCredentials();
+
+    FormData formData = FormData.fromMap({
+      'shop_id': shop_id,
+      'dishname': dishname, 
+      'content': content,
+      'evaluate': evaluate,
+      'review_img': await MultipartFile.fromFile(
+        image!.path,
+        filename: 'review_image.jpg',
+      )?? "",
+    });
+    var url=Uri.http(httpURL.hostname, 'review');
+    print(url as String);
+    final response = await Dio().post(
+      'http://${httpURL.hostname}/review',
+      data: formData,
+      options: Options(
+        headers: {'Authorization': 'Basic ${httpURL.Authcode}'},
       ),
-    ],
-  );
+    );
 
-  print(response.statusCode);
-  print(response.body);
-}
-
-Future<http.Response> multipart({  
-
-  required String method,
-  required Uri url,
-  required List<http.MultipartFile> files,
-}) async {
-  final request = http.MultipartRequest(method, url);
-  HttpURL reviews = HttpURL();
-  await reviews.loadCredentials();
-  request.files.addAll(files); // 送信するファイルのバイナリデータを追加
-  request.headers.addAll({'Authorization': 'Basic ${reviews.Authcode}'}); // 認証情報などを追加
-
-  final stream = await request.send();
-
-  return http.Response.fromStream(stream).then((response) {
-    if (response.statusCode == 200) {
-      return response;
-    }
-
-    return Future.error(response);
-  });
+    print(response.statusCode);
+    print(response.data);
+  } catch (e) {
+    print('Error posting review: $e');
+  }
 }
 }
 

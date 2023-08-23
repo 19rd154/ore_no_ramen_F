@@ -10,7 +10,7 @@ class TweetState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateFormat format = DateFormat('yyyy-MM-dd');
-    String created = format.format(reviewData.created_at);
+
     return Container(
       padding: const EdgeInsets.all(8), // 全体のパディングを追加
       child: Row(
@@ -24,7 +24,7 @@ class TweetState extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(reviewData.shopname),
-              Text(created),
+              
               const Text(''), // この行の意図が不明なため、必要な内容に修正する
               const Row(
                 children: [

@@ -69,6 +69,8 @@ class _Homescreenstate extends State<HomeScreen> {
       .map((review) => 
           ArticleContainer_review(reviewData: review),
       ).toList(),
+      shrinkWrap: true,                 // <= 追加
+  physics: ClampingScrollPhysics(), 
 )
                   
             )
@@ -83,13 +85,13 @@ class _Homescreenstate extends State<HomeScreen> {
   }*/
 
   Future<List<ReviewData>> _Home_get_Http() async {
-    HttpURL _search =
-        HttpURL();
+    HttpURL _search = HttpURL();
+    await _search.loadCredentials();
     var url = Uri.http('${_search.hostname}', 'home',);
 
     var response = await http.get(
       url,
-      headers: {'Authorization': 'Basic c3l1bnN1a2U6aG9nZQ=='},
+      headers: {'Authorization': 'Basic ${_search.Authcode}'},
     );
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
@@ -103,6 +105,7 @@ class _Homescreenstate extends State<HomeScreen> {
           evaluate: itemData['evaluate'],
           content: itemData['content'],
           created_at: itemData['created_at'],
+          image: itemData['review_img'],
         );
         reviewdDataList.add(reviewData);
       }
