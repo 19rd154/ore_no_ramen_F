@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({Key? key}) : super(key: key);
 
@@ -17,7 +16,8 @@ class MapViewScreenState extends State<MapViewScreen> {
   Set<Marker> markers = {}; // マーカーを保持するセット
   LatLng currentLatLng = const LatLng(35.6895, 139.6917); // 初期位置
 
-  late GoogleMapController _controller;
+  GoogleMapController? _controller; // late を削除
+
   late StreamSubscription<Position> positionStream;
   //初期位置
   final CameraPosition _kGooglePlex = const CameraPosition(
@@ -66,7 +66,7 @@ class MapViewScreenState extends State<MapViewScreen> {
       zoom: 14,
     );
 
-    _controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+    _controller?.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
   void _updateMarker(LatLng latLng) {
@@ -84,37 +84,35 @@ class MapViewScreenState extends State<MapViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        Scaffold(
-          appBar: AppBar(
-            title: const Text('Navigation'),
-            backgroundColor: Colors.green[700],
-              automaticallyImplyLeading:true,
-              actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => {
-                Navigator.pop(
-                  context,
-                  currentLatLng
-                )
-              },
-            ),
-          ]
-          ),
-          body:GoogleMap(
-            markers: markers,
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            myLocationEnabled: true,//現在位置をマップ上に表示
-            onMapCreated: (GoogleMapController controller) {
-              _controller = controller;
-            },
-            onTap: (LatLng latLng) {
-              _updateMarker(latLng);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation'),
+        backgroundColor: Colors.green[700],
+        automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => {
+              Navigator.pop(
+                context,
+                currentLatLng,
+              )
             },
           ),
-        );
-    }
+        ],
+      ),
+      body: GoogleMap(
+        markers: markers,
+        mapType: MapType.normal,
+        initialCameraPosition: _kGooglePlex,
+        myLocationEnabled: true, //現在位置をマップ上に表示
+        onMapCreated: (GoogleMapController controller) {
+          _controller = controller;
+        },
+        onTap: (LatLng latLng) {
+          _updateMarker(latLng);
+        },
+      ),
+    );
+  }
 }
-
