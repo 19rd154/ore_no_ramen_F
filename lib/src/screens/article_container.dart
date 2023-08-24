@@ -42,7 +42,8 @@ class ArticleContainer extends StatelessWidget {
               '店名:${article.name}',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 24,
+                fontWeight: FontWeight.bold
               ),
             ),
             // 住所
@@ -51,7 +52,7 @@ class ArticleContainer extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -60,9 +61,10 @@ class ArticleContainer extends StatelessWidget {
             Text(
               'アクセス:${article.access}',
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 20,
                 color: Colors.white,
                 fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
               ),
             ),
             IconButton( // ここから

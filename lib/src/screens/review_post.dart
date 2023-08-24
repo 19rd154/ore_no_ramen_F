@@ -34,6 +34,7 @@ class _ReviewSendState extends State<ReviewSend> {
   String _shopname = '';
   File? _image;
   String escape = '0'; 
+  int bookmark=0;
  final picker = ImagePicker();
 
   @override
@@ -178,9 +179,13 @@ class _ReviewSendState extends State<ReviewSend> {
                     ),
                   ),
                 ),
-                
+                IconButton(onPressed: (){
+                  setState(() {
+                    bookmark==0?bookmark=1:bookmark=0;
+                  });
+                }, icon: bookmark==0?Icon(Icons.favorite_border):Icon(Icons.favorite)),
                 ElevatedButton(//送信ボタン
-                  onPressed: () {_post_request(widget.shop_id,_image,_dishname,_text,_rating.toInt());//postリクエストの呼び出し
+                  onPressed: () {_post_request(widget.shop_id,_image,_dishname,_text,_rating.toInt(),bookmark);//postリクエストの呼び出し
                     Navigator.push( 
                       context,
                       MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
@@ -253,7 +258,7 @@ class _ReviewSendState extends State<ReviewSend> {
     // エラーハンドリングの追加
   }
 }*/
-Future<void> _post_request(String shop_id, File? image, String dishname, String content, int evaluate) async {
+Future<void> _post_request(String shop_id, File? image, String dishname, String content, int evaluate,int bookmark) async {
   try {
     HttpURL httpURL = HttpURL();
     await httpURL.loadCredentials();
@@ -263,7 +268,7 @@ Future<void> _post_request(String shop_id, File? image, String dishname, String 
       'dishname': dishname,
       'content': content,
       'evaluate': evaluate,
-      'bookmark': 1,
+      'bookmark': bookmark,
     });
 
     if (image != null && image.existsSync()) {

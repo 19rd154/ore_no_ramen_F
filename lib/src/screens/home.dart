@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _Homescreenstate extends State<HomeScreen> {
   List<ReviewData> _reviewDataList = [];
   int status=0;
-  int flag=0;
+  int flag=1;
   String _text1='';
   String _text2='';
  void _searchText1(String ReviewText) {
@@ -53,6 +53,7 @@ class _Homescreenstate extends State<HomeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('俺のらぁめん'),
+        backgroundColor: Colors.black,
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -64,7 +65,7 @@ class _Homescreenstate extends State<HomeScreen> {
                       vertical: 20,
                     ),
                     //検索ボックス
-                    child: TextField(
+                    child: flag%2==0? TextField(
                       style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
                               fontSize: 18,
                               color: Colors.black,
@@ -77,15 +78,15 @@ class _Homescreenstate extends State<HomeScreen> {
                       ),
                   
             
-            ),
+            ):SizedBox(height: 0,),
         ),
                 ],
-              ),flag==0? SizedBox(height: 1,):Padding(
+              ),Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),
                 //検索ボックス
-                child: TextField(
+                child: flag%3==0? TextField(
                   style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
                           fontSize: 18,
                           color: Colors.black,
@@ -98,12 +99,23 @@ class _Homescreenstate extends State<HomeScreen> {
                   ),
               
             
-            ),
-        ),TextButton(
+            ):SizedBox(height: 0),
+        ),Container(
+          width: 150,
+          height: 40,
+          child:TextButton(
                     onPressed: () async{final result = await _Home_get_Http(isSelectedValue!,_text1,_text2);
                     setState(() => _reviewDataList = result);},
-                    child: Text('検索'),
-        ),
+                    style: TextButton.styleFrom(
+              // 最小のサイズを設定
+              backgroundColor: Colors.blue, // 背景色を設定
+              primary: Colors.white, // テキストの色を設定
+            ),
+                    child: Text('一覧の表示',style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                              fontSize: 18,
+                              
+                             ),),
+        )),
         Center(
           child:DropdownButton(
       items: const[
@@ -135,18 +147,18 @@ class _Homescreenstate extends State<HomeScreen> {
           if (isSelectedValue == '/review/evaluate') {
         hint1 = 'いくつ以上？';
         hint2 = 'いくつ以下？';
-        flag=1;
+        flag=6;
       } else if (isSelectedValue == '/review/period') {
         hint1 = 'YYYY-MM-DDから';
         hint2 = 'YYYY-MM-DDまで';
-        flag=1;
+        flag=6;
       } else if (isSelectedValue == '/shop') {
         hint1 = '店舗名';
-        flag=0;
+        flag=2;
       } else {
         // 他の場合の処理
         hint1 = '検索ボタンをタッチ';
-        flag=0;
+        flag=1;
       }
         });
       },

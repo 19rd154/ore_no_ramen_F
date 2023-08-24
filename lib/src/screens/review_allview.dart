@@ -31,11 +31,12 @@ class ArticleContainer_review extends StatelessWidget {
           ),
         ),
         child: Row(
-          children: [Container(
+          children: [
+            Container(
         child: _myImg(reviewData.image),
         width: 120,
         height: 120,
-      ),SizedBox(height: 50,
+      ),SizedBox(
   width: 50,
   ),
             Column(

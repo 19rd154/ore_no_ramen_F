@@ -94,8 +94,9 @@ class Reviewsshow extends StatelessWidget {
                   Text(
                     'Rating: ${reviewData.evaluate}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                ElevatedButton(//送信ボタン
+                ),Center(
+                child:reviewData.bookmark==1?Icon(Icons.favorite,size: 50,):Icon(Icons.favorite_border,size: 50,),
+                ),ElevatedButton(//送信ボタン
                   onPressed: () {delete_Http(reviewData.reviewid);//postリクエストの呼び出し
                     Navigator.push( 
                       context,
@@ -133,7 +134,8 @@ Widget _ratingBar(double _rating) {
       itemBuilder: (context, _) => Icon(
         Icons.star,
         color: Colors.amber,
-      ), onRatingUpdate: (double value) {  },
+      ), onRatingUpdate: (Null) {  },
+      ignoreGestures: true,
     );
     }
 

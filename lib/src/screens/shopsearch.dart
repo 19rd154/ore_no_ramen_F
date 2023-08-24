@@ -30,24 +30,26 @@ class _Searchscreenstate extends State<SearchScreen> {
   double Longitude = 139.7499;
   List<UnvisitedData> _unvisitedDataList = [];
 
-
+  String Visitflag = 'unvisited';
   @override
   void initState() {
     super.initState();
     
   }
-
+  
+  String flag='1';
   @override
   Widget build(BuildContext context) {
     HttpURL search = HttpURL();
     String nowplace = 'username';
-    String Visitflag = 'unvisited';
-    int flag=0;
+    
+    
     return Scaffold(
       
       appBar: AppBar(
         title: const Text('店舗検索'),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
       ),
       body: 
       
@@ -58,42 +60,50 @@ class _Searchscreenstate extends State<SearchScreen> {
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),
-                //検索ボックス
+                //検索ボックスContainer(
+          child:Container(width: 150,
+          height: 40,
                 child: TextButton(
                     onPressed: () async{final result = await _v_search_Http(Visitflag,Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);print(Visitflag);},
-                    child: const Text('検索'),
-                  ),
+                    style: TextButton.styleFrom(backgroundColor: Colors.blue, // 背景色を設定
+              primary: Colors.white,) ,
+                    child: const Text('検索',style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                              fontSize: 18,)),
+                  ),),),
                   
                   
                 
                 
-              ),
-              Center(child: TextButton(
-                onPressed: (){
-                  flag==0? Visitflag = 'visited':Visitflag='unvisited'; 
-                  print(Visitflag);
-                  setState(() {
-                    flag=1;
-                  });
-                  print(flag);
-                },
-                child:const Text('訪れた店舗から検索する'),
-               
-              ),),Center(child: TextButton(
-                onPressed: (){
-                  Visitflag='unvisited';
-                  print(Visitflag);
-                  setState(() {
-                    flag=0;
-                  });
-                  print(flag);
-                },
-                child:const Text('訪れたことのない店舗から検索する'),
-               
-              ),),
+              
+              Center(child:Center(
+          child:DropdownButton(
+      items: const[
+        DropdownMenuItem(
+            value: '0',
+            child: Text('訪れた場所を指定'),
+          ),
+          DropdownMenuItem(
+              value: '1',
+              child: Text('訪れたことのない場所を指定'),
+          ),
+      ],
+      value: flag,
+      onChanged: (String? value) {
+        setState(() {
+          flag = value!;
+          if(flag=='0'){
+            Visitflag='visited';
+          }else{
+            Visitflag='unvisited';
+          }
+        print(Visitflag);
+        print(flag);}
+        );
+      },
+    ))),
               Center(
-                child: flag==0?SizedBox(height: 1,):
+                child: flag2==0?SizedBox(height: 1,):
                   
                   
                     Text('位置情報を取得しました！'),
@@ -170,7 +180,7 @@ class _Searchscreenstate extends State<SearchScreen> {
       for (var itemData in responseData) {
         // JSONデータから必要な要素を選んでオブジェクトに加工
         UnvisitedData unvisitedData = UnvisitedData(
-          reviews: itemData['reviews'] ?? '',
+          
           access: itemData['access'],
           address: itemData['address'],
           id: itemData['id'],
@@ -178,10 +188,10 @@ class _Searchscreenstate extends State<SearchScreen> {
         );
         unvisitedDataList.add(unvisitedData);
       }
-      setState(() {
+      
         
         _unvisitedDataList = unvisitedDataList;
-      });
+      
       status=response.statusCode;
       print(status);
     } else {
