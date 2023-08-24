@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _Homescreenstate extends State<HomeScreen> {
   List<ReviewData> _reviewDataList = [];
+  int status=0;
   String _text1='';
   String _text2='';
  void _searchText1(String ReviewText) {
@@ -142,14 +143,17 @@ class _Homescreenstate extends State<HomeScreen> {
     
         ),
         Expanded(
-            child: ListView(
-  children: _reviewDataList
-      .map((review) => 
-          ArticleContainer_review(reviewData: review),
-      ).toList(),
-      shrinkWrap: true,                 // <= 追加
-  physics: ClampingScrollPhysics(), 
-)
+            child: status != '200'
+      ? Center(
+          child: Text('データが見つかりませんでした'),
+        )
+      : ListView(
+          children: _reviewDataList
+              .map((review) => ArticleContainer_review(reviewData: review))
+              .toList(),
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+        ),
                   
             )
             ]),
@@ -203,6 +207,7 @@ class _Homescreenstate extends State<HomeScreen> {
         );
         reviewdDataList.add(reviewData);
       }
+      status=response.statusCode;
       return reviewdDataList;
     } else {
       print('Request failed with status: ${response.statusCode}.');
