@@ -19,7 +19,7 @@ class Reviewsshow extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('レビュー'),
-
+        backgroundColor: Colors.black,
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(

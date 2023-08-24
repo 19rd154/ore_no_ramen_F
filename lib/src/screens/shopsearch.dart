@@ -50,6 +50,7 @@ class _Searchscreenstate extends State<SearchScreen> {
         title: const Text('店舗検索'),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
+        
       ),
       body: 
       
