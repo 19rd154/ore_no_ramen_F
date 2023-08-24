@@ -92,9 +92,10 @@ class ArticleContainer_review extends StatelessWidget {
 }
 
 Widget _myImg(String url){
+  print(url);
   return FittedBox(
     fit: BoxFit.contain,
     child:
-    Image.network('http://44.218.199.137:8080/$url',),
+    url=='img/'?Image.network('https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-760x460.png',):Image.network('http://44.218.199.137:8080/$url',),
   );
 }

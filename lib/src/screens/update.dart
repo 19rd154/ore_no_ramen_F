@@ -7,6 +7,21 @@ import 'package:dio/dio.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:world/src/screens/models/Reviews.dart';
+
+
+import '../app.dart';
+import 'models/Post.dart';
+import 'models/Urlbase.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:dio/dio.dart';
+
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 
 import '../app.dart';
@@ -14,21 +29,16 @@ import 'models/Post.dart';
 import 'models/Urlbase.dart';
 
 
-class ReviewSend extends StatefulWidget {
-  const ReviewSend({Key? key,
-  required this.shop_id,
-  required this.shop_name,
-  required this.username,
-  required this.password,}) : super(key: key);
+class ReviewUpdate extends StatefulWidget {
+  const ReviewUpdate({Key? key,
+  required this.shop_id, required this.review_id,}) ;
   final String shop_id;
-  final String shop_name;
-    final String? username;
-  final String? password;
+  final String review_id;
   @override
-  _ReviewSendState createState() => _ReviewSendState();
+  _ReviewUpdateState createState() => _ReviewUpdateState();
 }
 
-class _ReviewSendState extends State<ReviewSend> {
+class _ReviewUpdateState extends State<ReviewUpdate> {
   String _text = '';
   String _dishname='';
   String _shopname = '';
@@ -123,7 +133,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     vertical: 10,
 
                   ),
-                  child: Text(widget.shop_name,style:const TextStyle(
+                  child: Text(widget.shop_id,style:const TextStyle(
                       fontSize: 28,
                     ),
                   ),
@@ -180,7 +190,9 @@ class _ReviewSendState extends State<ReviewSend> {
                 ),
                 
                 ElevatedButton(//送信ボタン
-                  onPressed: () {_post_request(widget.shop_id,_image,_dishname,_text,_rating.toInt());//postリクエストの呼び出し
+                  onPressed: () {_update_request(widget.review_id,
+                  widget.shop_id,
+                  _image,_dishname,_text,_rating.toInt());//postリクエストの呼び出し
                     Navigator.push( 
                       context,
                       MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
@@ -221,39 +233,7 @@ class _ReviewSendState extends State<ReviewSend> {
       updateOnDrag: true, //ドラッグによる操作可能か
     );
     }
-  /*Future<void> _Post_review_Http(String shopId, String dishname, String content, int evaluate, String image) async {
-  try {
-    HttpURL reviews = HttpURL();
-    await reviews.loadCredentials();
-    var url = Uri.http(reviews.hostname, 'review');
-
-    var request = Post_review(
-      shop_id: shopId,
-      dishname: dishname, 
-      content: content,
-      evaluate: evaluate, 
-      image: image
-      );
-      print(request);
-
-    final response = await http.post(
-      url,
-      body: json.encode(request.toJson()),
-      headers: {'Authorization': 'Basic ${reviews.Authcode}',"Content-Type": "application/json"},
-    );
-
-    if (response.statusCode == 200) {
-      final apiResults = ApiResults.fromJson(json.decode(response.body));
-      // リクエスト成功時の処理
-    } else {
-      throw Exception('Failed to post review');
-    }
-  } catch (e) {
-    print('Error posting review: $e');
-    // エラーハンドリングの追加
-  }
-}*/
-Future<void> _post_request(String shop_id, File? image, String dishname, String content, int evaluate) async {
+Future<void> _update_request(String reviewid,String shop_id, File? image, String dishname, String content, int evaluate) async {
   try {
     HttpURL httpURL = HttpURL();
     await httpURL.loadCredentials();
@@ -273,7 +253,7 @@ Future<void> _post_request(String shop_id, File? image, String dishname, String 
       )));
     }
 
-    var url = Uri.http(httpURL.hostname, 'review');
+    var url = Uri.http(httpURL.hostname, 'review/$reviewid');
     print(url);
 
     final response = await Dio().post(
@@ -290,11 +270,4 @@ Future<void> _post_request(String shop_id, File? image, String dishname, String 
     print('Error posting review: $e');
   }
 }
-
-
-
-
-
-
-
 }

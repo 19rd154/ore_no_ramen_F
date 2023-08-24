@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-
+import 'package:world/src/screens/delete.dart';
+import 'package:world/src/screens/review_post.dart';
+import 'package:world/src/screens/update.dart';
+import '../app.dart';
 import 'models/Reviews.dart';
+import 'models/update.dart';
 
 class Reviewsshow extends StatelessWidget {
   final ReviewData reviewData;
@@ -89,6 +94,25 @@ class Reviewsshow extends StatelessWidget {
                   Text(
                     'Rating: ${reviewData.evaluate}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton(//送信ボタン
+                  onPressed: () {delete_Http(reviewData.reviewid);//postリクエストの呼び出し
+                    Navigator.push( 
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
+                    );
+                  },
+
+                  child: const Text('reviewを削除'),//ボタンの表示テキスト
+                ),ElevatedButton(//送信ボタン
+                  onPressed: () {//postリクエストの呼び出し
+                    Navigator.push( 
+                      context,
+                      MaterialPageRoute(builder: (context) => ReviewUpdate(review_id: reviewData.reviewid, shop_id: reviewData.shopid,),)//リクエスト後にホームに戻る
+                    );
+                  },
+
+                  child: const Text('reviewを更新'),//ボタンの表示テキスト
                 ),],
         ),
       ),
@@ -117,6 +141,6 @@ Widget _myImg(String url){
   return FittedBox(
     fit: BoxFit.contain,
     child:
-    Image.network('http://44.218.199.137:8080/$url',),
+    url=='img/'?Image.network('https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-760x460.png',):Image.network('http://44.218.199.137:8080/$url',),
   );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:world/src/screens/dropdown.dart';
 import 'models/Reviews.dart';
 
 
@@ -19,14 +20,31 @@ class HomeScreen extends StatefulWidget {
 
 class _Homescreenstate extends State<HomeScreen> {
   List<ReviewData> _reviewDataList = [];
-
+  String _text1='';
+  String _text2='';
+ void _searchText1(String ReviewText) {
+    setState(() {
+      _text1 = ReviewText;
+    });
+    print(_text1);
+  }
+  void _searchText2(String ReviewText) {
+    setState(() {
+      _text2 = ReviewText;
+    });
+    print(_text2);
+  }
   @override
   void initState() {
     super.initState();
   }
-
+  String hint1='検索ボタンをタッチ';
+  String hint2='検索ボタンをタッチ';
+  String? isSelectedValue = '/review';
   @override
   Widget build(BuildContext context) {
+    
+    
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -45,23 +63,83 @@ class _Homescreenstate extends State<HomeScreen> {
                           fontSize: 18,
                           color: Colors.black,
                          ),
+                  onChanged: _searchText1,
                   decoration: InputDecoration(//デコレーション
-                    hintText: '店舗名',
+                    hintText: '$hint1',
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(),
-                    /*suffixIcon: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('現在地を取得'),
-                    ),*/
-                    suffix:TextButton(
-                    onPressed: () async{final result = await _Home_get_Http();
-                    setState(() => _reviewDataList = result);},
-                    child: Text('検索'),
                   ),
               
             
             ),
+        ),Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                //検索ボックス
+                child: TextField(
+                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                          fontSize: 18,
+                          color: Colors.black,
+                         ),
+                  onChanged: _searchText2,
+                  decoration: InputDecoration(//デコレーション
+                    hintText: '$hint2',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+              
+            
+            ),
+        ),TextButton(
+                    onPressed: () async{final result = await _Home_get_Http(isSelectedValue!,_text1,_text2);
+                    setState(() => _reviewDataList = result);},
+                    child: Text('検索'),
         ),
+        Center(
+          child:DropdownButton(
+      items: const[
+        DropdownMenuItem(
+            value: '/review',
+            child: Text('更新順から検索'),
+          ),
+          DropdownMenuItem(
+              value: '/review/bookmark',
+              child: Text('お気に入りから検索'),
+          ),
+          DropdownMenuItem(
+              value: '/review/evaluate',
+              child: Text('評価順から検索'),
+          ),
+          DropdownMenuItem(
+              value: '/review/period',
+              child: Text('更新日から検索'),
+          ),
+          DropdownMenuItem(
+              value: '/shop',
+              child: Text('店舗から検索'),
+          ),
+      ],
+      value: isSelectedValue,
+      onChanged: (String? value) {
+        setState(() {
+          isSelectedValue = value!;
+          if (isSelectedValue == '/review/evaluate') {
+        hint1 = 'いくつ以上？';
+        hint2 = 'いくつ以下？';
+      } else if (isSelectedValue == '/review/period') {
+        hint1 = 'YYYY-MM-DDから';
+        hint2 = 'YYYY-MM-DDまで';
+      } else if (isSelectedValue == '/shop') {
+        hint1 = '店舗名';
+      } else {
+        // 他の場合の処理
+        hint1 = '検索ボタンをタッチ';
+      }
+        });
+      },
+    ),
+    
         ),
         Expanded(
             child: ListView(
@@ -84,10 +162,23 @@ class _Homescreenstate extends State<HomeScreen> {
     setState(() => _reviewDataList = result);
   }*/
 
-  Future<List<ReviewData>> _Home_get_Http() async {
+  Future<List<ReviewData>> _Home_get_Http(String value,String? _option1,String? _option2) async {
     HttpURL _search = HttpURL();
     await _search.loadCredentials();
-    var url = Uri.http('${_search.hostname}', 'home',);
+    var url; 
+    if (value == '/review/evaluate') {
+        url = Uri.http('${_search.hostname}', 'home${value}',{'lower':'$_option1','upper':'$_option2'},);
+      } else if (value == '/review/period') {
+        url = Uri.http('${_search.hostname}', 'home${value}',{'lower':'$_option1','upper':'$_option2'},);
+      } else if (value == '/shop') {
+        url = Uri.http('${_search.hostname}', 'home${value}',{'offset':'3'},);
+      } else if (value == '/review/bookmark') {
+        url = Uri.http('${_search.hostname}', 'home${value}',{'offset':'3'},);
+      }else {
+        // 他の場合の処理
+      url = Uri.http('${_search.hostname}', 'home${value}',{'offset':'3'},);
+      }
+    
 
     var response = await http.get(
       url,
@@ -100,12 +191,15 @@ class _Homescreenstate extends State<HomeScreen> {
       List<ReviewData> reviewdDataList = [];
       for (var itemData in responseData) {
         ReviewData reviewData = ReviewData(
+          shopid: itemData['shop_id'],
+          reviewid: itemData['review_id'].toString(),
           shopname: itemData['shopname'],
           dishname: itemData['dishname'],
           evaluate: itemData['evaluate'],
           content: itemData['content'],
           created_at: itemData['created_at'],
           image: itemData['review_img'],
+          bookmark: itemData['bookmark']
         );
         reviewdDataList.add(reviewData);
       }

@@ -58,37 +58,37 @@ class _Searchscreenstate extends State<SearchScreen> {
                   vertical: 20,
                 ),
                 //検索ボックス
-                child: TextField(
-                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
-                          fontSize: 18,
-                          color: Colors.black,
-                         ),
-                  decoration: InputDecoration(//デコレーション
-                    hintText: nowplace,
-                    prefixIcon: const Icon(Icons.search),
-                    border: const OutlineInputBorder(),
-                    /*suffixIcon: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('現在地を取得'),
-                    ),*/
-                    suffix:TextButton(
+                child: TextButton(
                     onPressed: () async{final result = await _v_search_Http(Visitflag,Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);print(Visitflag);},
                     child: const Text('検索'),
                   ),
-                  ),
-                  onSubmitted: (String value)async{
-                  },
+                  
+                  
                 
-                ),
+                
               ),
               Center(child: TextButton(
                 onPressed: (){
                   flag==0? Visitflag = 'visited':Visitflag='unvisited'; 
                   print(Visitflag);
-                  flag==0? flag=1:flag=0;
+                  setState(() {
+                    flag=1;
+                  });
+                  print(flag);
                 },
-                child: flag==0?const Text('訪れた店舗から検索する'):const Text('訪れていない店舗から検索する'),
+                child:const Text('訪れた店舗から検索する'),
+               
+              ),),Center(child: TextButton(
+                onPressed: (){
+                  Visitflag='unvisited';
+                  print(Visitflag);
+                  setState(() {
+                    flag=0;
+                  });
+                  print(flag);
+                },
+                child:const Text('訪れたことのない店舗から検索する'),
                
               ),),
               Center(

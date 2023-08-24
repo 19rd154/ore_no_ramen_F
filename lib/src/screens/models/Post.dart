@@ -8,7 +8,7 @@ class Post_review {
     required this.content,
     required this.evaluate,
     required this.image,
-    
+    required this.bookmark,
   });
 
   // プロパティ
@@ -17,11 +17,12 @@ class Post_review {
   String content;
   int evaluate;
   String image;
+  int bookmark;
 
   
   @override
   String toString() {
-    return 'Post_review{shop_id: $shop_id, dishname: $dishname, content: $content, evaluate: $evaluate, image: $image}';
+    return 'Post_review{shop_id: $shop_id, dishname: $dishname, content: $content, evaluate: $evaluate, bookmark:$bookmark, image: $image}';
   }
 
   Map<String, dynamic> toJson() => {
