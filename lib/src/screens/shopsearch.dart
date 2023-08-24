@@ -25,6 +25,7 @@ class SearchScreen extends StatefulWidget {
 
 class _Searchscreenstate extends State<SearchScreen> {
   int status =0;
+  int flag2=0;
   double Latitude = 35.6408;
   double Longitude = 139.7499;
   List<UnvisitedData> _unvisitedDataList = [];
@@ -92,16 +93,14 @@ class _Searchscreenstate extends State<SearchScreen> {
                
               ),),
               Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Latitude: $Latitude'),
-                    Text('Longitude: $Longitude'),
-                  ],
-                ),
+                child: flag==0?SizedBox(height: 1,):
+                  
+                  
+                    Text('位置情報を取得しました！'),
+                  
               ),
               Expanded(
-            child: status != '200'
+            child: status != 200
       ? Center(
           child: Text('データが見つかりませんでした'),
         )
@@ -145,6 +144,8 @@ class _Searchscreenstate extends State<SearchScreen> {
                     Longitude = result.longitude;
                     print(Latitude);
                     print(Longitude);
+                    flag2=1;
+                    print(flag2);
                   });
                 }
               },
@@ -185,7 +186,7 @@ class _Searchscreenstate extends State<SearchScreen> {
       print(status);
     } else {
       print('Request failed with status: ${response.statusCode}.');
+      status=response.statusCode;
     }
     return _unvisitedDataList;}
   }
-

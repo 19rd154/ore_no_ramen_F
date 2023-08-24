@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:world/src/screens/dropdown.dart';
 import 'models/Reviews.dart';
@@ -21,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _Homescreenstate extends State<HomeScreen> {
   List<ReviewData> _reviewDataList = [];
   int status=0;
+  int flag=0;
   String _text1='';
   String _text2='';
  void _searchText1(String ReviewText) {
@@ -54,26 +57,30 @@ class _Homescreenstate extends State<HomeScreen> {
       body: Column(crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //検索ボックスの上下左右の空白の幅
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                //検索ボックス
-                child: TextField(
-                  style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
-                          fontSize: 18,
-                          color: Colors.black,
-                         ),
-                  onChanged: _searchText1,
-                  decoration: InputDecoration(//デコレーション
-                    hintText: '$hint1',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ),
-              
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    //検索ボックス
+                    child: TextField(
+                      style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
+                              fontSize: 18,
+                              color: Colors.black,
+                             ),
+                      onChanged: _searchText1,
+                      decoration: InputDecoration(//デコレーション
+                        hintText: '$hint1',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                      ),
+                  
             
             ),
-        ),Padding(
+        ),
+                ],
+              ),flag==0? SizedBox(height: 1,):Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),
@@ -128,14 +135,18 @@ class _Homescreenstate extends State<HomeScreen> {
           if (isSelectedValue == '/review/evaluate') {
         hint1 = 'いくつ以上？';
         hint2 = 'いくつ以下？';
+        flag=1;
       } else if (isSelectedValue == '/review/period') {
         hint1 = 'YYYY-MM-DDから';
         hint2 = 'YYYY-MM-DDまで';
+        flag=1;
       } else if (isSelectedValue == '/shop') {
         hint1 = '店舗名';
+        flag=0;
       } else {
         // 他の場合の処理
         hint1 = '検索ボタンをタッチ';
+        flag=0;
       }
         });
       },
@@ -143,7 +154,7 @@ class _Homescreenstate extends State<HomeScreen> {
     
         ),
         Expanded(
-            child: status != '200'
+            child: status != 200
       ? Center(
           child: Text('データが見つかりませんでした'),
         )
@@ -198,7 +209,7 @@ class _Homescreenstate extends State<HomeScreen> {
           shopid: itemData['shop_id'],
           reviewid: itemData['review_id'].toString(),
           shopname: itemData['shopname'],
-          dishname: itemData['dishname'],
+          dishname: itemData['dishname']?? '',
           evaluate: itemData['evaluate'],
           content: itemData['content'],
           created_at: itemData['created_at'],
@@ -207,10 +218,15 @@ class _Homescreenstate extends State<HomeScreen> {
         );
         reviewdDataList.add(reviewData);
       }
-      status=response.statusCode;
+      setState(() {
+        
+        print(status);
+      });
+      
+      
       return reviewdDataList;
     } else {
-      print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${response.statusCode}.');status=response.statusCode;
       return [];
     }
   }
