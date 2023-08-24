@@ -219,7 +219,7 @@ class _Homescreenstate extends State<HomeScreen> {
         reviewdDataList.add(reviewData);
       }
       setState(() {
-        
+        status=response.statusCode;
         print(status);
       });
       
