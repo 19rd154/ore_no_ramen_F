@@ -139,7 +139,7 @@ class _Searchscreenstate extends State<SearchScreen> {
               //ArticleContainer(article: searching,)
             ],
           ),floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: FloatingActionButton( // ここから
+            floatingActionButton: FloatingActionButton.extended( // ここから
               onPressed: () async {
                 final result = await Navigator.push(
                   context,
@@ -160,7 +160,8 @@ class _Searchscreenstate extends State<SearchScreen> {
                   });
                 }
               },
-            child: const Icon(Icons.add),
+              label: Text('マップから検索'),
+              icon: Icon(Icons.map),
           ),
       );
     }
