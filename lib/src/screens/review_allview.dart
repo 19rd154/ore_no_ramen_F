@@ -45,7 +45,7 @@ class ArticleContainer_review extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '店名:${reviewData.shopname}',
+                    '【${reviewData.shopname}】',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
