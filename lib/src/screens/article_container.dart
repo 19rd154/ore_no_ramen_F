@@ -29,7 +29,7 @@ class ArticleContainer extends StatelessWidget {
           vertical: 16,
         ),
         decoration: const BoxDecoration(
-          color: Color(0xFF55C500), // 背景色を指定
+          color: Colors.black, // 背景色を指定
           borderRadius: BorderRadius.all(
             Radius.circular(32), // 角丸を設定
           ),
@@ -41,7 +41,7 @@ class ArticleContainer extends StatelessWidget {
             Text(
               '【${article.name}】',
               style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 28,
                 fontWeight: FontWeight.bold
               ),
@@ -54,7 +54,7 @@ class ArticleContainer extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             // アクセス
@@ -62,7 +62,7 @@ class ArticleContainer extends StatelessWidget {
               'アクセス:${article.access}',
               style: const TextStyle(
                 fontSize: 20,
-                color: Colors.black,
+                color: Colors.white,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
               ),
@@ -78,7 +78,7 @@ class ArticleContainer extends StatelessWidget {
                 );
               },
               style: TextButton.styleFrom(
-            backgroundColor: Colors.black,
+            backgroundColor: Color.fromARGB(255, 70, 53, 133),
             
           ),
               label: Text('追加',style: TextStyle(

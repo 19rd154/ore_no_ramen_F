@@ -47,7 +47,7 @@ class _Searchscreenstate extends State<SearchScreen> {
     return Scaffold(
       
       appBar: AppBar(
-        title: const Text('店舗検索'),
+        title: const Text('俺のらぁめん'),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         
