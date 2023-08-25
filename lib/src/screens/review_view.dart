@@ -96,7 +96,7 @@ class Reviewsshow extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                 ),Center(
                 child:reviewData.bookmark==1?Icon(Icons.favorite,size: 50,):Icon(Icons.favorite_border,size: 50,),
-                ),ElevatedButton(//送信ボタン
+                ),ElevatedButton(style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),//送信ボタン
                   onPressed: () {delete_Http(reviewData.reviewid);//postリクエストの呼び出し
                     Navigator.push( 
                       context,
@@ -105,7 +105,7 @@ class Reviewsshow extends StatelessWidget {
                   },
 
                   child: const Text('reviewを削除'),//ボタンの表示テキスト
-                ),ElevatedButton(//送信ボタン
+                ),ElevatedButton(style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),//送信ボタン
                   onPressed: () {//postリクエストの呼び出し
                     Navigator.push( 
                       context,
