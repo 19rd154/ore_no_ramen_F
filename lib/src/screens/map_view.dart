@@ -91,7 +91,7 @@ class MapViewScreenState extends State<MapViewScreen> {
         automaticallyImplyLeading: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_location),
             onPressed: () => {
               Navigator.pop(
                 context,
