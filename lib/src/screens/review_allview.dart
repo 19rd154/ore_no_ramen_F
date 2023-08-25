@@ -29,14 +29,16 @@ class ArticleContainer_review extends StatelessWidget {
           ),
         ),
         child: Row(
-          children: [
+          children: [SizedBox(
+              width: 25,
+            ),
             Container(
               child: _myImg(reviewData.image),
-              width: 120,
-              height: 120,
+              width: 140,
+              height: 140,
             ),
             SizedBox(
-              width: 50,
+              width: 25,
             ),
             Expanded( // Expand this column to take the remaining space
               child: Column(
@@ -81,7 +83,7 @@ class ArticleContainer_review extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      '表示',
+                      'レビューを閲覧',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,

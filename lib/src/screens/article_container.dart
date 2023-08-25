@@ -39,10 +39,10 @@ class ArticleContainer extends StatelessWidget {
           children: [
             // 店舗名
             Text(
-              '店名:${article.name}',
+              '【${article.name}】',
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+                color: Colors.black,
+                fontSize: 28,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -54,7 +54,7 @@ class ArticleContainer extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
             // アクセス
@@ -62,12 +62,12 @@ class ArticleContainer extends StatelessWidget {
               'アクセス:${article.access}',
               style: const TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: Colors.black,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            IconButton( // ここから
+            TextButton.icon( // ここから
               onPressed: () {
                 Navigator.push(
                   context,
@@ -77,7 +77,16 @@ class ArticleContainer extends StatelessWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.add),
+              style: TextButton.styleFrom(
+            backgroundColor: Colors.black,
+            
+          ),
+              label: Text('追加',style: TextStyle(
+    fontSize: 20,
+    color: Colors.white,
+  ),),
+              icon: const Icon(Icons.post_add,color: Colors.white,
+              size: 30,),
             ),
           ]     
         ),

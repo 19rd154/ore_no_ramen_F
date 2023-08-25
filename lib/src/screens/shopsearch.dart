@@ -160,7 +160,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                   });
                 }
               },
-              label: Text('マップから検索'),
+              label: Text('位置情報を取得'),
               icon: Icon(Icons.map),
           ),
       );
