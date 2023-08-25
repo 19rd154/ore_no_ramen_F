@@ -4,6 +4,7 @@ import 'package:world/src/screens/signup.dart';
 
 import 'screens/shopsearch.dart';
 import 'screens/home.dart';
+import 'screens/logout.dart';
 
 
 
@@ -57,6 +58,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     _screens.addAll([
       HomeScreen(username: username, password: password),
       SearchScreen(username: username, password: password),
+      LogoutScreen(username: username, password: password),
     ]);
   }
     Future<void> _loadCredentials() async {
@@ -81,7 +83,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: '検索'),
-
+            BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'ログアウト'),
           ],
           type: BottomNavigationBarType.fixed,
         ));
