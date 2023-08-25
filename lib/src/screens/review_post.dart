@@ -43,8 +43,8 @@ class _ReviewSendState extends State<ReviewSend> {
     _rating = _initialRating;
   }
 
-    late double _rating;
-  final double _initialRating = 2.0;
+    late double _rating=0.0;
+  final double _initialRating = 0.0;
 
   IconData? _selectedIcon;
 
@@ -102,7 +102,7 @@ class _ReviewSendState extends State<ReviewSend> {
                 ),
                 Center(
                   child: _image == null
-                      ? const Text('画像が選択されていません')
+                      ? Image.network('https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-760x460.png')
                       : Image.file(_image!),
                 ),
                 Center(
@@ -156,7 +156,7 @@ class _ReviewSendState extends State<ReviewSend> {
                   ),
                   _ratingBar(),
                   Text(
-                    'Rating: $_rating',
+                    'Rating: ${_rating.toInt()}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Padding(//レビューの入力
@@ -170,7 +170,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     minLines: 1,
                     maxLines: 10,
                     decoration: const InputDecoration(
-                        hintText: 'Review',
+                        hintText: '感想を記入しよう！',
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black, width: 2))),
                     keyboardType: TextInputType.multiline,
@@ -192,7 +192,7 @@ class _ReviewSendState extends State<ReviewSend> {
                     );
                   },
 
-                  child: const Text('reviewを保存'),//ボタンの表示テキスト
+                  child: const Text('reviewを投稿'),//ボタンの表示テキスト
                 ),
                 
               ],
@@ -207,7 +207,7 @@ class _ReviewSendState extends State<ReviewSend> {
 
   Widget _ratingBar() {
     return RatingBar.builder(
-      initialRating: _initialRating, //初期値
+      initialRating: 0, //初期値
       minRating: 1,
       direction: Axis.horizontal, //縦か横か
       unratedColor: Colors.amber.withAlpha(50), //アイコンの色
