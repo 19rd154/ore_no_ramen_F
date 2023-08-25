@@ -10,15 +10,17 @@ const storage = FlutterSecureStorage();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
+  /*final keysToEliminate = [
+  "username","password"
+];
+final prefs = await SharedPreferences.getInstance();
 
 if (prefs.getBool('first_run') ?? true) {
-  FlutterSecureStorage storage = FlutterSecureStorage();
-
-  await storage.deleteAll();
+   FlutterSecureStorage storage = FlutterSecureStorage();
+   await Future.wait(keysToEliminate.map((key) => storage.delete(key: key)));
 
   prefs.setBool('first_run', false);
-}
+}*/
   final String Username= await storage.read(key: "username") ?? "";
   final String Password = await storage.read(key: "password") ?? "";
   print('ここだよ$Username');
