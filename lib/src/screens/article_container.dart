@@ -78,7 +78,7 @@ class ArticleContainer extends StatelessWidget {
                 );
               },
               style: TextButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 70, 53, 133),
+            backgroundColor: Color(0xFFC51162 ),
             
           ),
               label: Text('追加',style: TextStyle(

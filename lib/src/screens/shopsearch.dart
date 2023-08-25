@@ -24,7 +24,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _Searchscreenstate extends State<SearchScreen> {
-  int status =0;
+  int status =200;
   int flag2=0;
   double Latitude = 35.6408;
   double Longitude = 139.7499;
@@ -67,7 +67,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 child: TextButton(
                     onPressed: () async{final result = await _v_search_Http(Visitflag,Latitude,Longitude);
                     setState(() => _unvisitedDataList = result);print(Visitflag);},
-                    style: TextButton.styleFrom(backgroundColor: Colors.blue, // 背景色を設定
+                    style: TextButton.styleFrom(backgroundColor: Color(0xFFC51162 ), // 背景色を設定
               primary: Colors.white,) ,
                     child: const Text('検索',style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
                               fontSize: 18,)),
@@ -82,11 +82,11 @@ class _Searchscreenstate extends State<SearchScreen> {
       items: const[
         DropdownMenuItem(
             value: '0',
-            child: Text('訪れた場所を指定'),
+            child: Text('訪問済みの店舗で検索'),
           ),
           DropdownMenuItem(
               value: '1',
-              child: Text('訪れたことのない場所を指定'),
+              child: Text('未訪問の店舗で検索'),
           ),
       ],
       value: flag,
@@ -113,7 +113,7 @@ class _Searchscreenstate extends State<SearchScreen> {
               Expanded(
             child: status != 200
       ? Center(
-          child: Text('データが見つかりませんでした'),
+          child: Visitflag=='unvisited'?Text('周辺店舗制覇？',style: TextStyle(fontSize: 20),):Text('まだ見ぬラーメンを探そう！',style: TextStyle(fontSize: 20),),
         )
       : ListView(
               children: _unvisitedDataList
@@ -161,6 +161,7 @@ class _Searchscreenstate extends State<SearchScreen> {
                 }
               },
               label: Text('位置情報を取得'),
+              backgroundColor: Color(0xFFC51162 ),
               icon: Icon(Icons.map),
           ),
       );

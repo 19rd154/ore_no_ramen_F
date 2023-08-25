@@ -36,7 +36,7 @@ class _Logoutscreenstate extends State<LogoutScreen> {
         title: const Text('俺のらぁめん'),
         backgroundColor: Colors.black,
       ),body: Center(
-        child: ElevatedButton(
+        child: ElevatedButton(style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),
           onPressed:  () async{
             try{
               await storage.delete(key: "username");

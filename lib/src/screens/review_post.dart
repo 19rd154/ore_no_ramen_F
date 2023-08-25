@@ -89,8 +89,10 @@ class _ReviewSendState extends State<ReviewSend> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('投稿'),
+        backgroundColor: Colors.black,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+  child:Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -185,13 +187,14 @@ class _ReviewSendState extends State<ReviewSend> {
                   });
                 }, icon: bookmark==0?Icon(Icons.favorite_border):Icon(Icons.favorite)),
                 ElevatedButton(//送信ボタン
+                style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),
                   onPressed: () {_post_request(widget.shop_id,_image,_dishname,_text,_rating.toInt(),bookmark);//postリクエストの呼び出し
                     Navigator.push( 
                       context,
                       MaterialPageRoute(builder: (context) => const MyStatefulWidget(),)//リクエスト後にホームに戻る
                     );
                   },
-
+                  
                   child: const Text('reviewを投稿'),//ボタンの表示テキスト
                 ),
                 
@@ -202,7 +205,7 @@ class _ReviewSendState extends State<ReviewSend> {
       ),
     ),
     ]),
-    );
+    ));
   }
 
   Widget _ratingBar() {

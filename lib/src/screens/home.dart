@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _Homescreenstate extends State<HomeScreen> {
   List<ReviewData> _reviewDataList = [];
-  int status=0;
+  int status=200;
   int flag=1;
   String _text1='';
   String _text2='';
@@ -110,7 +110,7 @@ class _Homescreenstate extends State<HomeScreen> {
                     setState(() => _reviewDataList = result);},
                     style: TextButton.styleFrom(
               // 最小のサイズを設定
-              backgroundColor: Colors.blue, // 背景色を設定
+              backgroundColor: Color(0xFFC51162 ), // 背景色を設定
               primary: Colors.white, // テキストの色を設定
             ),
                     child: Text('一覧の表示',style: const TextStyle( // ← TextStyleを渡す.textのフォントや大きさの設定
@@ -154,9 +154,7 @@ class _Homescreenstate extends State<HomeScreen> {
         hint1 = 'YYYY-MM-DDから';
         hint2 = 'YYYY-MM-DDまで';
         flag=6;
-      } else if (isSelectedValue == '/shop') {
-        hint1 = '店舗名';
-        flag=2;
+      
       } else {
         // 他の場合の処理
         hint1 = '検索ボタンをタッチ';
@@ -170,7 +168,7 @@ class _Homescreenstate extends State<HomeScreen> {
         Expanded(
             child: status != 200
       ? Center(
-          child: Text('データが見つかりませんでした'),
+          child: Text('レビューを書きにいこう！',style: TextStyle(fontSize: 20),),
         )
       : ListView(
           children: _reviewDataList
