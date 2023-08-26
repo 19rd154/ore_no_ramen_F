@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'models/Reviews.dart';
+import 'package:url_launcher/link.dart';
+import 'url.dart';
 
 
 import 'models/Urlbase.dart';
@@ -36,19 +38,25 @@ class _Logoutscreenstate extends State<LogoutScreen> {
         title: const Text('俺のらぁめん'),
         backgroundColor: Colors.black,
       ),body: Center(
-        child: ElevatedButton(style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),
-          onPressed:  () async{
-            try{
-              await storage.delete(key: "username");
-              await storage.delete(key: "password");
-            }catch (e) {
-              // Handle any errors that might occur during deletion
-              print("Error deleting data: $e");
-            }
-            print("success");
-            Navigator.push(context, MaterialPageRoute(builder: (context) => signupPage()));
-          },
-          child: Text('ログアウト'),
+        child: Column(mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: ElevatedButton(style: ElevatedButton.styleFrom(primary: Color(0xFFC51162 )),
+                onPressed:  () async{
+                  try{
+                    await storage.delete(key: "username");
+                    await storage.delete(key: "password");
+                  }catch (e) {
+                    // Handle any errors that might occur during deletion
+                    print("Error deleting data: $e");
+                  }
+                  print("success");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => signupPage()));
+                },
+                child: Text('ログアウト'),
+              ),
+            ),
+          UrlLauncherExample(),],
         ),
       ),
     );
