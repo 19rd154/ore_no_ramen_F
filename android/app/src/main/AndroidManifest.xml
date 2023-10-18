@@ -6,8 +6,7 @@
         android:label="oreno-ramen"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB8lOb5W9g0Ir31TR6M2HZpzwQtm1HT_jE"/>
+       
         <activity
             android:name=".MainActivity"
             android:exported="true"
