@@ -21,6 +21,6 @@ class HttpURL {
     return base64.encode(utf8.encode(needEncode()));
   }
 
-  String hostname = '52.196.214.9:8080';
+  String hostname = '35.75.108.62:8080';
 }
 
